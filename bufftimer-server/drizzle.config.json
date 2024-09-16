@@ -1,0 +1,6 @@
+{
+	"dialect": "sqlite",
+	"out": "./migrations-folder",
+	"schema": "./src/db/schema.ts",
+	"breakpoints": false
+}

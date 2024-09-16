@@ -1,18 +1,30 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Bind resources to your worker in `wrangler.toml`. After adding bindings, a type definition for the
- * `Env` object can be regenerated with `npm run cf-typegen`.
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { Bindings, Variables } from './lib/bindings';
+import { authMiddleware } from './lib/middleware';
+import { csrf } from 'hono/csrf';
 
-export default {
-	async fetch(request, env, ctx): Promise<Response> {
-		return new Response('Hello World!');
-	},
-} satisfies ExportedHandler<Env>;
+const app = new Hono<{ Bindings: Bindings; Variables: Variables }>();
+app.use('*', (c, next) => {
+	return cors({
+		origin: c.env.CORS_ORIGIN,
+		credentials: true,
+		allowMethods: ['GET', 'POST', 'PATCH', 'DELETE'],
+		allowHeaders: ['content-type'],
+	})(c, next);
+});
+
+app.use(csrf());
+app.use('*', authMiddleware);
+
+app.get('/', (c) => {
+	const user = c.get('user');
+	const session = c.get('session');
+	return c.json({ msg: 'Welcome !', user: user, session: session });
+});
+
+app.get('/', (c) => {
+	return c.json({ msg: 'Welcome in BuffTimer !' });
+});
+
+export default app;
