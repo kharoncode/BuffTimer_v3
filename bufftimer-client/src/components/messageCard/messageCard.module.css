@@ -1,0 +1,31 @@
+.container {
+   display: flex;
+   gap: 5px;
+}
+
+.playerPicture {
+   width: 60px;
+   height: 60px;
+   object-fit: cover;
+   border-radius: 15px;
+   border: solid 2px #5d557c;
+}
+
+.messageContainer {
+   width: 100%;
+   padding: 10px;
+   display: flex;
+   flex-direction: column;
+   background-color: white;
+   border: solid 2px #5d557c;
+   border-radius: 0 10px 0 10px;
+}
+
+h4 {
+   font-size: 1.5em;
+}
+
+.message {
+   font-style: italic;
+   font-size: 1.3em;
+}

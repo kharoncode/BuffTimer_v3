@@ -1,0 +1,28 @@
+[
+   {
+      "id": "kharon",
+      "login": "kharon",
+      "password": "1234",
+      "email": "kharon@vert.rdk",
+      "name": "Kha'ron Golmatarkâl",
+      "intelligence": "11",
+      "favoris": "almir",
+      "realm": "RDK",
+      "spheres": "protection justice negation",
+      "diplomacy": "PE",
+      "admin": false
+   },
+   {
+      "id": "heren",
+      "login": "heren",
+      "password": "1234",
+      "email": "heren@vert.pe",
+      "name": "Heren",
+      "intelligence": "11",
+      "favoris": "cenedrill",
+      "realm": "PE",
+      "spheres": "protection justice negation",
+      "diplomacy": "",
+      "admin": false
+   }
+]

@@ -1,0 +1,14 @@
+.container {
+   margin-top: 40px;
+   padding: 20px;
+   display: flex;
+   justify-content: center;
+   flex-wrap: wrap;
+   gap: 25px;
+}
+
+@media screen and (max-width: 700px) {
+   .container {
+      flex-direction: column;
+   }
+}
