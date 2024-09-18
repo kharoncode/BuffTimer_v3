@@ -3,6 +3,8 @@ import { cors } from 'hono/cors';
 import { Bindings, Variables } from './lib/bindings';
 import { authMiddleware } from './lib/middleware';
 import { csrf } from 'hono/csrf';
+import usersRoute from './routes/users';
+import authRoute from './routes/auth';
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>();
 app.use('*', (c, next) => {
@@ -22,6 +24,9 @@ app.get('/', (c) => {
 	const session = c.get('session');
 	return c.json({ msg: 'Welcome !', user: user, session: session });
 });
+
+app.route('/users', usersRoute);
+app.route('/auth', authRoute);
 
 app.get('/', (c) => {
 	return c.json({ msg: 'Welcome in BuffTimer !' });
