@@ -3,12 +3,12 @@ import { getAuth } from '@router/selectors';
 import { useSelector } from 'react-redux';
 
 function PrivateRoute() {
-   const auth: boolean = useSelector(getAuth);
-   if (!auth) {
-      return <Navigate to="/login" />;
-   } else {
-      return <Outlet />;
-   }
+	const auth: boolean = useSelector(getAuth);
+	if (!auth) {
+		return <Navigate to="/" />;
+	} else {
+		return <Outlet />;
+	}
 }
 
 export default PrivateRoute;

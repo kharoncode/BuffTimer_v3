@@ -1,0 +1,47 @@
+.header {
+	&_nav {
+		width: 100%;
+		display: flex;
+		gap: 20px;
+		align-items: center;
+	}
+	&_link {
+		cursor: pointer;
+		transition-duration: 300ms;
+		border-bottom: solid 1px transparent;
+		border-top: solid 1px transparent;
+		padding: 4px 0;
+		font-weight: 700;
+		&:hover {
+			color: var(--color-hl1);
+			transition-duration: 400ms;
+		}
+		&_active {
+			border-color: var(--color-hl1);
+			color: var(--color-hl1) !important;
+		}
+	}
+	&_authItem {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+	}
+
+	&_logo {
+		font-size: 1.5rem;
+		color: var(--color-hl1) !important;
+		margin-right: 20px;
+	}
+
+	&_right {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 30px;
+	}
+}
+
+.welcome {
+	margin: 0 auto;
+}

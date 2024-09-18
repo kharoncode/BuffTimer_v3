@@ -1,0 +1,87 @@
+:host {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-right: auto;
+}
+
+.form {
+	padding: 30px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 35px;
+	border-radius: 25px;
+}
+
+.input {
+	&_text__container {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		&:first-child {
+			margin-top: 20px;
+		}
+		label {
+			position: absolute;
+			padding-left: 5px;
+			color: rgb(71, 71, 71);
+			top: 10px;
+			left: 10px;
+			transition-duration: 300ms;
+		}
+		input {
+			height: 40px;
+			outline: none;
+			border: solid 2px transparent;
+			padding: 5px 10px;
+			background: #ffffff;
+		}
+	}
+	&-checkbox--container {
+		width: 100%;
+		display: flex;
+		gap: 10px;
+		label {
+			color: #000000;
+		}
+	}
+}
+
+.submit {
+	width: 100%;
+	cursor: not-allowed;
+	font-size: 1.2rem;
+	font-weight: 600;
+	margin-top: auto;
+	padding: 10px;
+	border-radius: 10px;
+	border-style: none;
+	color: rgb(149, 155, 167);
+	background-color: rgb(236, 237, 239);
+	&_valid {
+		cursor: pointer;
+		color: white;
+		background: var(--color-hl1);
+		&:hover {
+			background-color: var(--color-hl3);
+		}
+	}
+}
+
+.focus {
+	color: #000 !important;
+	top: -23px !important;
+	transition-duration: 300ms !important;
+}
+
+.invalid {
+	border-bottom: solid 2px rgb(203, 26, 35) !important;
+}
+
+.subscribe {
+	width: 100%;
+	text-align: center;
+}
