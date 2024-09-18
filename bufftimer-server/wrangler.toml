@@ -10,7 +10,7 @@ database_name = "BT_db"
 database_id = "943f408f-012d-4e9a-920b-d2b654098b6a"
 
 [env.production]
-  vars = { CORS_ORIGIN = "https://bufftimer-client.pages.dev/" }
+  vars = { CORS_ORIGIN = "https://bufftimer-client.pages.dev" }
 
 [[env.production.d1_databases]]
 binding = "DB"
