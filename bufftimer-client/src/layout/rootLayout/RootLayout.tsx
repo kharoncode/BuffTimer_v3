@@ -7,7 +7,6 @@ import { AuthProvider } from '../../utils/useAuth';
 const RootLayout = () => {
 	return (
 		<>
-			{/* <Header /> */}
 			<AuthProvider>
 				<Header />
 			</AuthProvider>

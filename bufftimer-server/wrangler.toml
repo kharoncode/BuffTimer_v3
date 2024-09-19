@@ -18,7 +18,7 @@ database_name = "BT_db"
 database_id = "943f408f-012d-4e9a-920b-d2b654098b6a"
 
 [env.development]
-vars = { CORS_ORIGIN = "http://localhost:5173" }
+vars = { CORS_ORIGIN = ["http://localhost:5173","http://localhost:8788"] }
 
 [[env.development.d1_databases]]
 binding = "DB"
