@@ -15,6 +15,20 @@
       "when": 1727026187553,
       "tag": "0001_chubby_enchantress",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1727096972566,
+      "tag": "0002_tan_sunset_bain",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1727097910557,
+      "tag": "0003_milky_vargas",
+      "breakpoints": true
     }
   ]
 }

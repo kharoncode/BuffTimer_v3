@@ -1,23 +1,24 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import styles from './createCharacter.module.scss';
+import styles from '../createCharacter/createCharacter.module.scss';
 import host from '@/services/host';
 import ErrorMessage from '@/components/error-message/ErrorMessage';
 
 import { enum_realm } from '../../../../../bt_enum/enum_character';
 import { enum_god, enum_sphere, enum_magic_type, enum_god_sphere } from '../../../../../bt_enum/enum_mystique';
+import { Character } from '@/services/types/character';
 
-const CreateCharacter = () => {
-	const initialValue = {
-		name: '',
-		picture: '',
-		enum_realm: 0,
-		intelligence: 0,
-		max_life: 0,
-		message: '',
-		enum_god: 0,
-		enum_magic_type: 0,
-	};
+const EditCharacter = ({ character }: { character: Character }) => {
 	const initialState = {
+		name: true,
+		picture: true,
+		enum_realm: true,
+		intelligence: true,
+		max_life: true,
+		enum_god: true,
+		enum_magic_type: true,
+		sphere: true,
+	};
+	const initialErrorState = {
 		name: false,
 		picture: false,
 		enum_realm: false,
@@ -37,9 +38,14 @@ const CreateCharacter = () => {
 		[enum_sphere.vitalite]: false,
 	};
 
+	character.sphere
+		.toString()
+		.split('')
+		.map((el) => (initialSphere[Number(el)] = true));
+
 	const [formValid, setFormValid] = useState(initialState);
-	const [formValue, setFormValue] = useState(initialValue);
-	const [formError, setFormError] = useState(initialState);
+	const [formValue, setFormValue] = useState(character);
+	const [formError, setFormError] = useState(initialErrorState);
 	const [formSphere, setFormSphere] = useState(initialSphere);
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -110,7 +116,7 @@ const CreateCharacter = () => {
 	};
 
 	const resetForm = () => {
-		setFormValue(initialValue);
+		setFormValue(character);
 		setFormValid(initialState);
 		setFormError(initialState);
 	};
@@ -129,12 +135,13 @@ const CreateCharacter = () => {
 		event.preventDefault();
 		if (isFormValid()) {
 			const data = { ...formValue, sphere: addSphere() };
-			console.log(data);
+			const { id, ...newCharacter } = data;
+
 			const resp = await fetch(`${host}/characters`, {
-				method: 'POST',
+				method: 'PATCH',
 				credentials: 'include',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(data),
+				body: JSON.stringify({ id: id, update_character: newCharacter }),
 			});
 
 			if (resp.ok) {
@@ -174,7 +181,7 @@ const CreateCharacter = () => {
 				</div>
 				<div className={styles.input_text__container}>
 					<label htmlFor="enum_realm">Royaume</label>
-					<select name="enum_realm" id="enum_realm" required onChange={handleChange}>
+					<select name="enum_realm" id="enum_realm" required onChange={handleChange} value={formValue.enum_realm}>
 						<option value="">-- Sélectionner --</option>
 						{Object.keys(enum_realm)
 							.filter((key) => typeof enum_realm[key as keyof typeof enum_realm] === 'number')
@@ -306,4 +313,4 @@ const CreateCharacter = () => {
 	);
 };
 
-export default CreateCharacter;
+export default EditCharacter;

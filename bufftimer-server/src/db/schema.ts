@@ -22,9 +22,12 @@ const sessions = sqliteTable('sessions', {
 
 const characters = sqliteTable('characters', {
 	id: integer('id').primaryKey(),
+	user_id: integer('user_id')
+		.notNull()
+		.references(() => users.id),
 	name: text('name').notNull().unique(),
 	picture: text('picture').notNull(),
-	realm: integer('realm').notNull(),
+	enum_realm: integer('enum_realm').notNull(),
 	intelligence: integer('intelligence').notNull(),
 	current_life: integer('current_life').notNull(),
 	max_life: integer('max_life').notNull(),

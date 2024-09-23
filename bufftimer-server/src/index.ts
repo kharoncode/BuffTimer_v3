@@ -5,7 +5,7 @@ import { authMiddleware } from './lib/middleware';
 import { csrf } from 'hono/csrf';
 import usersRoute from './routes/users';
 import authRoute from './routes/auth';
-import charactersRoute from './routes/players';
+import charactersRoute from './routes/characters';
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>();
 app.use('*', (c, next) => {
