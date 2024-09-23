@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 type AuthContextType = {
 	isAuth: boolean;
+	loading: boolean;
 	setLogin: () => void;
 	setLogout: () => void;
 };
@@ -12,6 +13,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const [isAuth, setIsAuth] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -24,6 +26,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				}
 			} catch (error) {
 				console.error('Failed to check authentication:', error);
+			} finally {
+				setLoading(false);
 			}
 		};
 
@@ -36,7 +40,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		navigate('/');
 	};
 
-	return <AuthContext.Provider value={{ isAuth, setLogin, setLogout }}>{children}</AuthContext.Provider>;
+	return <AuthContext.Provider value={{ isAuth, loading, setLogin, setLogout }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = (): AuthContextType => {

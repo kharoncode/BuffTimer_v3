@@ -15,7 +15,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 // import { PlayerMenu } from '@/components/playerMenu/PlayerMenu';
 import RootLayout from '@/layout/rootLayout/RootLayout';
 import NotFound from '@/layout/notFound/NotFound';
-import { Login } from '@/pages/login/Login';
+import PrivateRoute from './PrivateRoute';
+import Profile from '@/pages/profile/Profile';
 
 const App = () => {
 	const router = createBrowserRouter([
@@ -24,7 +25,7 @@ const App = () => {
 			element: <RootLayout />,
 			children: [
 				{ path: '', element: <Home /> },
-				{ path: '/login', element: <Login /> },
+				{ path: '/auth', element: <PrivateRoute />, children: [{ path: '/auth/profile', element: <Profile /> }] },
 				{ path: '/*', element: <NotFound /> },
 			],
 		},

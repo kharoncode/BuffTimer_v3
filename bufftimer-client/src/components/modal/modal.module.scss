@@ -1,0 +1,32 @@
+.container {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 1000;
+}
+
+.modal {
+	background: rgb(255, 255, 255, 0.5);
+	height: 100svh;
+	width: 100svw;
+	padding: 50px;
+	display: flex;
+	justify-content: center;
+	&_container {
+		width: 350px;
+		height: fit-content;
+		position: relative;
+		border: 2px solid var(--color-hl1);
+		border-radius: 25px;
+		background: #fff4d7;
+		padding: 50px 30px;
+		display: flex;
+		justify-content: center;
+	}
+	&__close {
+		position: absolute;
+		cursor: pointer;
+		top: 20px;
+		right: 20px;
+	}
+}

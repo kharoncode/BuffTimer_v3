@@ -20,7 +20,7 @@ const sessions = sqliteTable('sessions', {
 	expiresAt: integer('expires_at').notNull(),
 });
 
-const players = sqliteTable('players', {
+const characters = sqliteTable('characters', {
 	id: integer('id').primaryKey(),
 	name: text('name').notNull().unique(),
 	picture: text('picture').notNull(),
@@ -35,7 +35,7 @@ const players = sqliteTable('players', {
 	favoris: text('favoris').notNull().default(''),
 });
 
-const mobs = sqliteTable('mobs', {
+const monsters = sqliteTable('monsters', {
 	id: integer('id').primaryKey(),
 	enum_mob: integer('enum_mob').notNull(),
 	name: text('name').notNull(),
@@ -43,11 +43,11 @@ const mobs = sqliteTable('mobs', {
 	max_life: integer('max_life').notNull().default(100),
 });
 
-const player_spells = sqliteTable('spells', {
+const player_spells = sqliteTable('player_spells', {
 	id: integer('id').primaryKey(),
 	playerId: integer('player_id')
 		.notNull()
-		.references(() => players.id),
+		.references(() => characters.id),
 	enum_spell: integer('enum_spell').notNull(),
 	created_at: text('created_at')
 		.notNull()
@@ -55,11 +55,11 @@ const player_spells = sqliteTable('spells', {
 	expires_At: text('expires_at').notNull(),
 });
 
-const mob_spells = sqliteTable('spells', {
+const monster_spells = sqliteTable('monster_spells', {
 	id: integer('id').primaryKey(),
 	mobId: integer('mob_id')
 		.notNull()
-		.references(() => mobs.id),
+		.references(() => monsters.id),
 	enum_spell: integer('enum_spell').notNull(),
 	created_at: text('created_at')
 		.notNull()
@@ -67,4 +67,41 @@ const mob_spells = sqliteTable('spells', {
 	expires_At: text('expires_at').notNull(),
 });
 
-export { users, sessions, players, mobs, player_spells, mob_spells };
+const groups = sqliteTable('groups', {
+	id: integer('id').primaryKey(),
+	creator_id: integer('creator_id')
+		.notNull()
+		.references(() => characters.id),
+	name: text('name').notNull(),
+});
+
+const group_characters = sqliteTable('group_characters', {
+	id: integer('id').primaryKey(),
+	group_id: integer('group_id')
+		.notNull()
+		.references(() => groups.id),
+	character_id: integer('character_id')
+		.notNull()
+		.references(() => characters.id),
+});
+
+const group_enemies = sqliteTable('group_enemies', {
+	id: integer('id').primaryKey(),
+	group_id: integer('group_id')
+		.notNull()
+		.references(() => groups.id),
+	enemy_id: integer('enemy_id').notNull(),
+	type: integer('type').notNull(),
+});
+
+const favoris = sqliteTable('favoris', {
+	id: integer('id').primaryKey(),
+	character_id: integer('character_id')
+		.notNull()
+		.references(() => characters.id),
+	character_favoris_id: integer('character_favoris_id')
+		.notNull()
+		.references(() => characters.id),
+});
+
+export { users, sessions, characters, monsters, player_spells, monster_spells, groups, group_characters, group_enemies, favoris };

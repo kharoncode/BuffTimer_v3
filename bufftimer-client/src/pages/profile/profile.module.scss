@@ -1,0 +1,17 @@
+.profile {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	&_column {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	&_charactersList {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+}

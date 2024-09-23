@@ -7,7 +7,7 @@ import { useAuth } from '../../../utils/useAuth';
 const SignInForm = ({ toggle }: { toggle: (bool: boolean) => void }) => {
 	const [focus, setFocus] = useState({ login: false, password: false });
 	const [formValid, setFormValid] = useState({ login: false, password: false });
-	const [formValue, setFormValue] = useState({ login: '', password: '', rememberMe: false });
+	const [formValue, setFormValue] = useState({ login: '', password: '' });
 	const [formError, setFormError] = useState({ login: false, password: false });
 
 	const { setLogin } = useAuth();
@@ -46,7 +46,7 @@ const SignInForm = ({ toggle }: { toggle: (bool: boolean) => void }) => {
 	};
 
 	const resetForm = () => {
-		setFormValue({ login: '', password: '', rememberMe: false });
+		setFormValue({ login: '', password: '' });
 		setFormValid({ login: false, password: false });
 		setFormError({ login: false, password: false });
 	};
@@ -102,10 +102,6 @@ const SignInForm = ({ toggle }: { toggle: (bool: boolean) => void }) => {
 				<label className={focus.password ? styles.focus : ''} htmlFor="password">
 					Password
 				</label>
-			</div>
-			<div className={styles.input_checkbox__container}>
-				<input type="checkbox" name="rememberMe" id="rememberMe" checked={formValue.rememberMe} onChange={handleChange} />
-				<label htmlFor="rememberMe">Se souvenir de moi</label>
 			</div>
 			<button className={`${styles.submit} ${isFormValid() && styles.submit_valid}`} type="submit">
 				Connexion

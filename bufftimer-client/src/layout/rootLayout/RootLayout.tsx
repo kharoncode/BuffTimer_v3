@@ -9,11 +9,12 @@ const RootLayout = () => {
 		<>
 			<AuthProvider>
 				<Header />
+
+				<main>
+					<Outlet />
+				</main>
+				<Footer />
 			</AuthProvider>
-			<main>
-				<Outlet />
-			</main>
-			<Footer />
 		</>
 	);
 };

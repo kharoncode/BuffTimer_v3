@@ -26,7 +26,7 @@ const Header = () => {
 		const { data: user } = UseFetch<User[]>(`${host}/users`, { credentials: 'include' });
 		return (
 			user && (
-				<NavLink to="/profile" className={`${styles.header_link} ${styles.welcome}`}>
+				<NavLink to="/auth/profile" className={`${styles.header_link} ${styles.welcome}`}>
 					Welcome {user[0].username}
 				</NavLink>
 			)
