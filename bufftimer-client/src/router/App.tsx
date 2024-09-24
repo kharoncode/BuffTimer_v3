@@ -17,6 +17,8 @@ import RootLayout from '@/layout/rootLayout/RootLayout';
 import NotFound from '@/layout/notFound/NotFound';
 import PrivateRoute from './PrivateRoute';
 import Profile from '@/pages/profile/Profile';
+import Character from '@/pages/character/Character';
+import Settings from '@/pages/settings/Settings';
 
 const App = () => {
 	const router = createBrowserRouter([
@@ -25,7 +27,15 @@ const App = () => {
 			element: <RootLayout />,
 			children: [
 				{ path: '', element: <Home /> },
-				{ path: '/auth', element: <PrivateRoute />, children: [{ path: '/auth/profile', element: <Profile /> }] },
+				{
+					path: '/auth',
+					element: <PrivateRoute />,
+					children: [
+						{ path: '/auth/profile', element: <Profile /> },
+						{ path: '/auth/character', element: <Character /> },
+						{ path: '/auth/settings', element: <Settings /> },
+					],
+				},
 				{ path: '/*', element: <NotFound /> },
 			],
 		},

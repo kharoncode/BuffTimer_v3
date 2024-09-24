@@ -16,7 +16,7 @@ usersRoute
 		const db = drizzle(c.env.DB);
 		//const resp = await db.select().from(users);
 		const resp = await db.select().from(users).where(eq(users.id, user.id));
-		return c.json(resp);
+		return c.json(resp[0]);
 	})
 	// .post('/', async (c) => {
 	// 	try {

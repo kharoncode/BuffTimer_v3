@@ -1,8 +1,7 @@
 import { Hono } from 'hono';
 import { drizzle } from 'drizzle-orm/d1';
 import { characters } from '../db/schema';
-import { eq } from 'drizzle-orm';
-import bcrypt from 'bcryptjs';
+import { eq, and } from 'drizzle-orm';
 import { Bindings, Variables } from '../lib/bindings';
 
 const charactersRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>();
@@ -14,10 +13,23 @@ charactersRoute
 			return c.json({ error: 'Veuillez vous connecter !' }, 404);
 		}
 		const db = drizzle(c.env.DB);
-		//const resp = await db.select().from(characters);
-		const resp = await db.select().from(characters).where(eq(characters.user_id, user.id));
-		console.log(resp);
-		return c.json(resp);
+		const characterId = Number(c.req.query('id'));
+		if (characterId) {
+			const resp = await db
+				.select()
+				.from(characters)
+				.where(and(eq(characters.user_id, user.id), eq(characters.id, characterId)));
+
+			if (resp.length === 0) {
+				return c.json({ error: 'Personnage introuvable ou non autorisé.' }, 404);
+			}
+
+			return c.json(resp[0]);
+		} else {
+			const resp = await db.select().from(characters).where(eq(characters.user_id, user.id));
+
+			return c.json(resp);
+		}
 	})
 	.post('/', async (c) => {
 		try {

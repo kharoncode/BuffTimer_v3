@@ -6,6 +6,7 @@ import UseFetch from '@/utils/useFetch';
 import host from '@/services/host';
 import { Character } from '@/services/types/character';
 import EditCharacter from '@/components/profile/editCharacter/EditCharacter';
+import edit_icone from '@assets/icones/edit.svg';
 
 const Profile = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -27,16 +28,16 @@ const Profile = () => {
 				<div className={styles.profile_charactersList}>
 					{data &&
 						data.map((character) => (
-							<div key={character.name}>
+							<div className={styles.characters_row} key={character.name}>
 								<div>{character.name}</div>
-								<button
+								<img
+									src={edit_icone}
+									alt="Edit"
 									onClick={() => {
 										setCharacter(character);
 										toggleModal('editCharacter');
 									}}
-								>
-									Edit
-								</button>
+								></img>
 							</div>
 						))}
 				</div>
@@ -55,7 +56,7 @@ const Profile = () => {
 					{typeAdd === 'character' ? (
 						<CreateCharacter />
 					) : typeAdd === 'editCharacter' && selectedCharacter ? (
-						<EditCharacter character={selectedCharacter} />
+						<EditCharacter character={selectedCharacter} setIsOpen={setIsOpen} />
 					) : (
 						<div>Favoris</div>
 					)}

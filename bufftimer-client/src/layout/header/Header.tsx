@@ -6,13 +6,18 @@ import host from '../../services/host';
 import { useAuth } from '../../utils/useAuth';
 import { User } from '../../services/types/user';
 import UseFetch from '../../utils/useFetch';
-import playersIcone from '@assets/icones/players.svg';
 import infoIcone from '@assets/icones/info.svg';
+import { Character } from '@/services/types/character';
+import CharacterHeader from '@/components/header/characterHeader/CharacterHeader';
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const { isAuth, setLogout } = useAuth();
+	const { data: characters } = UseFetch<Character[]>(`${host}/characters`, {
+		method: 'GET',
+		credentials: 'include',
+	});
 
 	const logOut = async () => {
 		await fetch(`${host}/auth/logout`, { method: 'POST', credentials: 'include' }).then((resp) => {
@@ -23,11 +28,11 @@ const Header = () => {
 	};
 
 	const ProfilLink: React.FC = () => {
-		const { data: user } = UseFetch<User[]>(`${host}/users`, { credentials: 'include' });
+		const { data: user } = UseFetch<User>(`${host}/users`, { credentials: 'include' });
 		return (
 			user && (
 				<NavLink to="/auth/profile" className={`${styles.header_link} ${styles.welcome}`}>
-					Welcome {user[0].username}
+					Welcome {user.username}
 				</NavLink>
 			)
 		);
@@ -39,12 +44,14 @@ const Header = () => {
 				<NavLink className={`${styles.header_logo} ${styles.header_link}`} to={'/'}>
 					BuffTimer
 				</NavLink>
-				{isAuth ? (
+				{isAuth && characters ? (
 					<>
-						<NavLink to="/players" className={styles.header_authItem}>
-							<img src={playersIcone} alt="playerIcone" />
-							<div className={styles.header_link}>Personnages</div>
-						</NavLink>
+						{characters.map((character) => (
+							<NavLink key={character.id} to={`/auth/character?id=${character.id}`} className={styles.header_authItem}>
+								<CharacterHeader character={character} />
+							</NavLink>
+						))}
+
 						<ProfilLink />
 					</>
 				) : (
@@ -54,7 +61,7 @@ const Header = () => {
 			{/* {isAuth && <UserComponent />} */}
 			<div className={styles.header_right}>
 				{isAuth && (
-					<NavLink to="/info" className={styles.header_authItem}>
+					<NavLink to="/auth/settings" className={styles.header_authItem}>
 						<img src={infoIcone} alt="infoIcone" />
 						<div className={styles.header_link}>Settings</div>
 					</NavLink>

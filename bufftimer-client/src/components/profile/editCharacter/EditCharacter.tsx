@@ -7,13 +7,14 @@ import { enum_realm } from '../../../../../bt_enum/enum_character';
 import { enum_god, enum_sphere, enum_magic_type, enum_god_sphere } from '../../../../../bt_enum/enum_mystique';
 import { Character } from '@/services/types/character';
 
-const EditCharacter = ({ character }: { character: Character }) => {
+const EditCharacter = ({ character, setIsOpen }: { character: Character; setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
 	const initialState = {
 		name: true,
 		picture: true,
 		enum_realm: true,
 		intelligence: true,
 		max_life: true,
+		current_life: true,
 		enum_god: true,
 		enum_magic_type: true,
 		sphere: true,
@@ -24,6 +25,7 @@ const EditCharacter = ({ character }: { character: Character }) => {
 		enum_realm: false,
 		intelligence: false,
 		max_life: false,
+		current_life: false,
 		enum_god: false,
 		enum_magic_type: false,
 		sphere: false,
@@ -72,7 +74,7 @@ const EditCharacter = ({ character }: { character: Character }) => {
 				setFormValid({ ...formValid, [name]: Number(value) != 0 });
 				setFormValue({ ...formValue, [name]: Number(value) });
 			}
-		} else if (['intelligence', 'max_life'].includes(name)) {
+		} else if (['intelligence', 'max_life', 'current_life'].includes(name)) {
 			setFormValue({ ...formValue, [name]: Number(value) });
 			setFormValid({ ...formValid, [name]: Number(value) > 0 ? true : false });
 			setFormError({ ...formError, [name]: Number(value) < 1 ? true : false });
@@ -115,11 +117,11 @@ const EditCharacter = ({ character }: { character: Character }) => {
 		return Object.values(formValid).every((value) => value === true);
 	};
 
-	const resetForm = () => {
-		setFormValue(character);
-		setFormValid(initialState);
-		setFormError(initialState);
-	};
+	// const resetForm = () => {
+	// 	setFormValue(character);
+	// 	setFormValid(initialState);
+	// 	setFormError(initialState);
+	// };
 
 	const addSphere = () => {
 		let sphere = '';
@@ -145,7 +147,7 @@ const EditCharacter = ({ character }: { character: Character }) => {
 			});
 
 			if (resp.ok) {
-				resetForm();
+				setIsOpen(false);
 			}
 		}
 	};
@@ -210,20 +212,37 @@ const EditCharacter = ({ character }: { character: Character }) => {
 					/>
 					{formError.intelligence && <ErrorMessage content="Vous n'êtes pas bête à ce point ?" />}
 				</div>
-				<div className={styles.input_text__container}>
-					<label htmlFor="max_life">Point de vie</label>
-					<input
-						className={`${formError.max_life && styles.invalid}`}
-						type="number"
-						id="max_life"
-						name="max_life"
-						value={formValue.max_life}
-						required
-						min={0}
-						onChange={handleChange}
-					/>
-					{formError.max_life && <ErrorMessage content="A peine arrivé et déjà mort ?" />}
+				<div className={styles.container_life}>
+					<div className={styles.input_text__container}>
+						<label htmlFor="current_life">PV</label>
+						<input
+							className={`${formError.current_life && styles.invalid}`}
+							type="number"
+							id="current_life"
+							name="current_life"
+							value={formValue.current_life}
+							required
+							min={0}
+							onChange={handleChange}
+						/>
+						{formError.current_life && <ErrorMessage content="A peine arrivé et déjà mort ?" />}
+					</div>
+					<div className={styles.input_text__container}>
+						<label htmlFor="max_life">PV Max</label>
+						<input
+							className={`${formError.max_life && styles.invalid}`}
+							type="number"
+							id="max_life"
+							name="max_life"
+							value={formValue.max_life}
+							required
+							min={0}
+							onChange={handleChange}
+						/>
+						{formError.max_life && <ErrorMessage content="A peine arrivé et déjà mort ?" />}
+					</div>
 				</div>
+
 				<div className={styles.input_text__container}>
 					<label htmlFor="enum_god">Dieu</label>
 					<select
@@ -306,7 +325,7 @@ const EditCharacter = ({ character }: { character: Character }) => {
 					</div>
 				</div>
 				<button className={`${styles.submit} ${isFormValid() && styles.submit_valid}`} type="submit">
-					Connexion
+					Editer
 				</button>
 			</form>
 		</>
