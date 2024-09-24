@@ -82,10 +82,10 @@ export const dataSlice = createSlice({
 			console.log('pending');
 			state.loading = true;
 		});
-		builder.addCase(fetchData.fulfilled, (state, action) => {
+		builder.addCase(fetchData.fulfilled, (state) => {
 			console.log('fulfilled');
 			state.loading = false;
-			state.data = action.payload;
+			//state.data = action.payload;
 			state.error = null;
 		});
 		builder.addCase(fetchData.rejected, (state, action) => {

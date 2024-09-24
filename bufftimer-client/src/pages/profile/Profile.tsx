@@ -54,7 +54,7 @@ const Profile = () => {
 			{isOpen && (
 				<Modal setIsOpen={setIsOpen}>
 					{typeAdd === 'character' ? (
-						<CreateCharacter />
+						<CreateCharacter setIsOpen={setIsOpen} />
 					) : typeAdd === 'editCharacter' && selectedCharacter ? (
 						<EditCharacter character={selectedCharacter} setIsOpen={setIsOpen} />
 					) : (

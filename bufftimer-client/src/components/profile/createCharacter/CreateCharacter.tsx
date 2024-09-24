@@ -6,7 +6,7 @@ import ErrorMessage from '@/components/error-message/ErrorMessage';
 import { enum_realm } from '../../../../../bt_enum/enum_character';
 import { enum_god, enum_sphere, enum_magic_type, enum_god_sphere } from '../../../../../bt_enum/enum_mystique';
 
-const CreateCharacter = () => {
+const CreateCharacter = ({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
 	const initialValue = {
 		name: '',
 		picture: '',
@@ -139,6 +139,7 @@ const CreateCharacter = () => {
 
 			if (resp.ok) {
 				resetForm();
+				setIsOpen(false);
 			}
 		}
 	};
@@ -299,7 +300,7 @@ const CreateCharacter = () => {
 					</div>
 				</div>
 				<button className={`${styles.submit} ${isFormValid() && styles.submit_valid}`} type="submit">
-					Connexion
+					Ajouter
 				</button>
 			</form>
 		</>
