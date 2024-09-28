@@ -5,25 +5,25 @@ compatibility_date = "2024-09-09"
 compatibility_flags = ["nodejs_compat"]
 
 [[d1_databases]]
-binding = "DB" # i.e. available in your Worker on env.DB
-database_name = "BT_db"
-database_id = "943f408f-012d-4e9a-920b-d2b654098b6a"
+binding = "DB"
+database_name = "bufftimer_db"
+database_id = "93fd33e4-4617-480b-8c9c-0182b4c52d36"
 
 [env.production]
   vars = { CORS_ORIGIN = "https://bufftimer-client.pages.dev" }
 
 [[env.production.d1_databases]]
 binding = "DB"
-database_name = "BT_db"
-database_id = "943f408f-012d-4e9a-920b-d2b654098b6a"
+database_name = "bufftimer_db"
+database_id = "93fd33e4-4617-480b-8c9c-0182b4c52d36"
 
 [env.development]
 vars = { CORS_ORIGIN = ["http://localhost:5173","http://localhost:8788"] }
 
 [[env.development.d1_databases]]
 binding = "DB"
-database_name = "BT_db"
-database_id = "943f408f-012d-4e9a-920b-d2b654098b6a"
+database_name = "bufftimer_db"
+database_id = "93fd33e4-4617-480b-8c9c-0182b4c52d36"
 
 
 # Automatically place your workloads in an optimal location to minimize latency.

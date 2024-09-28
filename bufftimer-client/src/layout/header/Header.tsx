@@ -18,6 +18,10 @@ const Header = () => {
 		method: 'GET',
 		credentials: 'include',
 	});
+	const { data: user } = UseFetch<User>(`${host}/users`, {
+		method: 'GET',
+		credentials: 'include',
+	});
 
 	const logOut = async () => {
 		await fetch(`${host}/auth/logout`, { method: 'POST', credentials: 'include' }).then((resp) => {
@@ -27,32 +31,25 @@ const Header = () => {
 		});
 	};
 
-	const ProfilLink: React.FC = () => {
-		const { data: user } = UseFetch<User>(`${host}/users`, { credentials: 'include' });
-		return (
-			user && (
-				<NavLink to="/auth/profile" className={`${styles.header_link} ${styles.welcome}`}>
-					Welcome {user.username}
-				</NavLink>
-			)
-		);
-	};
-
 	return (
 		<header>
 			<nav className={styles.header_nav}>
 				<NavLink className={`${styles.header_logo} ${styles.header_link}`} to={'/'}>
 					BuffTimer
 				</NavLink>
-				{isAuth && characters ? (
+				{isAuth ? (
 					<>
-						{characters.map((character) => (
-							<NavLink key={character.id} to={`/auth/character?id=${character.id}`} className={styles.header_authItem}>
-								<CharacterHeader character={character} />
+						{characters &&
+							characters.map((character) => (
+								<NavLink key={character.id} to={`/auth/character?id=${character.id}`} className={styles.header_authItem}>
+									<CharacterHeader character={character} />
+								</NavLink>
+							))}
+						{user && (
+							<NavLink to="/auth/profile" className={`${styles.header_link} ${styles.welcome}`}>
+								Welcome {user.username}
 							</NavLink>
-						))}
-
-						<ProfilLink />
+						)}
 					</>
 				) : (
 					<></>

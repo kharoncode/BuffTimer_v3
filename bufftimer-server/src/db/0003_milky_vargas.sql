@@ -1,1 +1,0 @@
-ALTER TABLE `characters` RENAME COLUMN `realm` TO `enum_realm`;

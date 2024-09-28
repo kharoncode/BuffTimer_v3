@@ -9,14 +9,13 @@ const users = sqliteTable('users', {
 	date: text('date')
 		.notNull()
 		.default(sql`(current_timestamp)`),
-	admin: integer('admin', { mode: 'boolean' }).notNull(),
 });
 
 const sessions = sqliteTable('sessions', {
 	id: text('id').primaryKey(),
 	userId: integer('user_id')
 		.notNull()
-		.references(() => users.id),
+		.references(() => users.id, { onDelete: 'cascade' }),
 	expiresAt: integer('expires_at').notNull(),
 });
 
@@ -24,7 +23,7 @@ const characters = sqliteTable('characters', {
 	id: integer('id').primaryKey(),
 	user_id: integer('user_id')
 		.notNull()
-		.references(() => users.id),
+		.references(() => users.id, { onDelete: 'cascade' }),
 	name: text('name').notNull().unique(),
 	picture: text('picture').notNull(),
 	enum_realm: integer('enum_realm').notNull(),
@@ -35,11 +34,13 @@ const characters = sqliteTable('characters', {
 	enum_god: integer('enum_god').notNull(),
 	enum_magic_type: integer('enum_magic_type').notNull(),
 	sphere: integer('sphere').notNull(),
-	favoris: text('favoris').notNull().default(''),
 });
 
 const monsters = sqliteTable('monsters', {
 	id: integer('id').primaryKey(),
+	user_id: integer('user_id')
+		.notNull()
+		.references(() => users.id, { onDelete: 'cascade' }),
 	enum_mob: integer('enum_mob').notNull(),
 	name: text('name').notNull(),
 	current_life: integer('current_life').notNull().default(100),
@@ -50,7 +51,7 @@ const player_spells = sqliteTable('player_spells', {
 	id: integer('id').primaryKey(),
 	playerId: integer('player_id')
 		.notNull()
-		.references(() => characters.id),
+		.references(() => characters.id, { onDelete: 'cascade' }),
 	enum_spell: integer('enum_spell').notNull(),
 	created_at: text('created_at')
 		.notNull()
@@ -62,7 +63,7 @@ const monster_spells = sqliteTable('monster_spells', {
 	id: integer('id').primaryKey(),
 	mobId: integer('mob_id')
 		.notNull()
-		.references(() => monsters.id),
+		.references(() => monsters.id, { onDelete: 'cascade' }),
 	enum_spell: integer('enum_spell').notNull(),
 	created_at: text('created_at')
 		.notNull()
@@ -74,7 +75,7 @@ const groups = sqliteTable('groups', {
 	id: integer('id').primaryKey(),
 	creator_id: integer('creator_id')
 		.notNull()
-		.references(() => characters.id),
+		.references(() => characters.id, { onDelete: 'cascade' }),
 	name: text('name').notNull(),
 });
 
@@ -82,17 +83,17 @@ const group_characters = sqliteTable('group_characters', {
 	id: integer('id').primaryKey(),
 	group_id: integer('group_id')
 		.notNull()
-		.references(() => groups.id),
+		.references(() => groups.id, { onDelete: 'cascade' }),
 	character_id: integer('character_id')
 		.notNull()
-		.references(() => characters.id),
+		.references(() => characters.id, { onDelete: 'cascade' }),
 });
 
 const group_enemies = sqliteTable('group_enemies', {
 	id: integer('id').primaryKey(),
 	group_id: integer('group_id')
 		.notNull()
-		.references(() => groups.id),
+		.references(() => groups.id, { onDelete: 'cascade' }),
 	enemy_id: integer('enemy_id').notNull(),
 	type: integer('type').notNull(),
 });
@@ -101,10 +102,10 @@ const favoris = sqliteTable('favoris', {
 	id: integer('id').primaryKey(),
 	character_id: integer('character_id')
 		.notNull()
-		.references(() => characters.id),
+		.references(() => characters.id, { onDelete: 'cascade' }),
 	character_favoris_id: integer('character_favoris_id')
 		.notNull()
-		.references(() => characters.id),
+		.references(() => characters.id, { onDelete: 'cascade' }),
 });
 
 export { users, sessions, characters, monsters, player_spells, monster_spells, groups, group_characters, group_enemies, favoris };
