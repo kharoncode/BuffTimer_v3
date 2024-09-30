@@ -6,6 +6,7 @@ import { csrf } from 'hono/csrf';
 import usersRoute from './routes/users';
 import authRoute from './routes/auth';
 import charactersRoute from './routes/characters';
+import monstersRoute from './routes/monsters';
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>();
 app.use('*', (c, next) => {
@@ -29,6 +30,7 @@ app.get('/', (c) => {
 app.route('/users', usersRoute);
 app.route('/auth', authRoute);
 app.route('/characters', charactersRoute);
+app.route('/monsters', monstersRoute);
 
 app.get('/', (c) => {
 	return c.json({ msg: 'Welcome in BuffTimer !' });

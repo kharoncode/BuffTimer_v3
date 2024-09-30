@@ -1,24 +1,24 @@
 import { Hono } from 'hono';
 import { drizzle } from 'drizzle-orm/d1';
-import { characters } from '../db/schema';
+import { monsters } from '../db/schema';
 import { eq, and } from 'drizzle-orm';
 import { Bindings, Variables } from '../lib/bindings';
 
-const charactersRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>();
+const monstersRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>();
 
-charactersRoute
+monstersRoute
 	.get('/', async (c) => {
 		const user = c.get('user');
 		if (!user) {
 			return c.json({ error: 'Veuillez vous connecter !' }, 404);
 		}
 		const db = drizzle(c.env.DB);
-		const characterId = Number(c.req.query('id'));
-		if (characterId) {
+		const monsterId = Number(c.req.query('id'));
+		if (monsterId) {
 			const resp = await db
 				.select()
-				.from(characters)
-				.where(and(eq(characters.user_id, user.id), eq(characters.id, characterId)));
+				.from(monsters)
+				.where(and(eq(monsters.user_id, user.id), eq(monsters.id, monsterId)));
 
 			if (resp.length === 0) {
 				return c.json({ error: 'Personnage introuvable ou non autorisé.' }, 404);
@@ -26,7 +26,7 @@ charactersRoute
 
 			return c.json(resp[0]);
 		} else {
-			const resp = await db.select().from(characters).where(eq(characters.user_id, user.id));
+			const resp = await db.select().from(monsters).where(eq(monsters.user_id, user.id));
 
 			return c.json(resp);
 		}
@@ -38,15 +38,13 @@ charactersRoute
 				return c.json({ error: 'Veuillez vous connecter !' }, 404);
 			}
 			const db = drizzle(c.env.DB);
-			const character = await c.req.json();
-			character.user_id = user.id;
-			character.current_life = character.max_life;
-			console.log(character);
-			const resp = await db.insert(characters).values(character).returning();
+			const monster = await c.req.json();
+			monster.user_id = user.id;
+			const resp = await db.insert(monsters).values(monster).returning();
 			return c.json(resp, 200);
 		} catch (error) {
 			console.error("Erreur lors de la création de l'utilisateur:", error);
-			if (error instanceof Error && error.message.includes('UNIQUE constraint failed: characters.mail')) {
+			if (error instanceof Error && error.message.includes('UNIQUE constraint failed: monsters.mail')) {
 				return c.json({ error: 'Cet email est déjà utilisé.' }, 400);
 			}
 			return c.json({ error: "Une erreur s'est produite lors de la création de l'utilisateur." }, 500);
@@ -59,12 +57,12 @@ charactersRoute
 				return c.json({ msg: 'Veuillez vous connecter !' });
 			}
 			const db = drizzle(c.env.DB);
-			const { id, update_character } = await c.req.json();
+			const { id, update_monster } = await c.req.json();
 			if (!id) {
 				return c.json({ error: 'Un ID est requis.' }, 400);
 			}
 
-			const resp = await db.update(characters).set(update_character).where(eq(characters.id, id)).returning();
+			const resp = await db.update(monsters).set(update_monster).where(eq(monsters.id, id)).returning();
 
 			if (resp.length > 0) {
 				return c.json(resp[0], 200);
@@ -88,8 +86,8 @@ charactersRoute
 				return c.json({ error: 'Un ID est requis.' }, 400);
 			}
 			const resp = await db
-				.delete(characters)
-				.where(and(eq(characters.user_id, user.id), eq(characters.id, id)))
+				.delete(monsters)
+				.where(and(eq(monsters.user_id, user.id), eq(monsters.id, id)))
 				.returning();
 			if (resp.length > 0) {
 				return c.json({ msg: 'Utilisateur correctement supprimé !' }, 200);
@@ -101,4 +99,4 @@ charactersRoute
 		}
 	});
 
-export default charactersRoute;
+export default monstersRoute;

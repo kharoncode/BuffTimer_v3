@@ -1,0 +1,27 @@
+.container {
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	padding: 20px;
+}
+
+.option {
+	width: 20%;
+	display: flex;
+	justify-content: space-around;
+	&_icone {
+		cursor: pointer;
+		width: 20px;
+		&_edit:hover {
+			fill: var(--color-hl1);
+		}
+		&_delete:hover {
+			fill: red;
+		}
+	}
+}
+
+.name {
+	font-weight: 700;
+}

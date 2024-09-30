@@ -6,8 +6,17 @@ import ErrorMessage from '@/components/error-message/ErrorMessage';
 import { enum_realm } from '../../../../../bt_enum/enum_character';
 import { enum_god, enum_sphere, enum_magic_type, enum_god_sphere } from '../../../../../bt_enum/enum_mystique';
 import { Character } from '@/services/types/character';
+import { useAuth } from '@/utils/useAuth';
 
-const EditCharacter = ({ character, setIsOpen }: { character: Character; setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+const EditCharacter = ({
+	character,
+	setIsOpen,
+	onSuccess,
+}: {
+	character: Character;
+	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	onSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
 	const initialState = {
 		name: true,
 		picture: true,
@@ -45,6 +54,8 @@ const EditCharacter = ({ character, setIsOpen }: { character: Character; setIsOp
 		.split('')
 		.map((el) => (initialSphere[Number(el)] = true));
 
+	const { getCharacterList } = useAuth();
+
 	const [formValid, setFormValid] = useState(initialState);
 	const [formValue, setFormValue] = useState(character);
 	const [formError, setFormError] = useState(initialErrorState);
@@ -52,14 +63,12 @@ const EditCharacter = ({ character, setIsOpen }: { character: Character; setIsOp
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		const { name, value } = event.target;
-
-		console.log(name, value);
 		if (name === 'name') {
 			setFormValue({ ...formValue, [name]: value });
 			setFormValid({ ...formValid, [name]: value.length > 2 ? true : false });
 			setFormError({ ...formError, [name]: value.length < 3 ? true : false });
 		} else if (name === 'picture') {
-			const pictureRegex = /^(https:\/\/.*\.(?:png|jpg|gif))/;
+			const pictureRegex = /^(https:\/\/.*\.(?:png|jpg|gif|jpeg))/;
 			setFormValue({ ...formValue, [name]: value });
 			setFormValid({ ...formValid, [name]: pictureRegex.test(value) });
 			setFormError({ ...formError, [name]: !pictureRegex.test(value) });
@@ -137,17 +146,18 @@ const EditCharacter = ({ character, setIsOpen }: { character: Character; setIsOp
 		event.preventDefault();
 		if (isFormValid()) {
 			const data = { ...formValue, sphere: addSphere() };
-			const { id, ...newCharacter } = data;
 
 			const resp = await fetch(`${host}/characters`, {
 				method: 'PATCH',
 				credentials: 'include',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ id: id, update_character: newCharacter }),
+				body: JSON.stringify({ id: character.id, update_character: data }),
 			});
 
 			if (resp.ok) {
 				setIsOpen(false);
+				onSuccess((prev) => !prev);
+				getCharacterList();
 			}
 		}
 	};
@@ -223,6 +233,7 @@ const EditCharacter = ({ character, setIsOpen }: { character: Character; setIsOp
 							value={formValue.current_life}
 							required
 							min={0}
+							max={formValue.max_life}
 							onChange={handleChange}
 						/>
 						{formError.current_life && <ErrorMessage content="A peine arrivé et déjà mort ?" />}

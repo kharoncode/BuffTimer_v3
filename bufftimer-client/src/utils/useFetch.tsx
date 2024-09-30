@@ -15,7 +15,7 @@ export interface FetchData<T> {
 	error: Error | null;
 }
 
-export default function UseFetch<T>(url: string, option?: fetchOption): FetchData<T> {
+export default function UseFetch<T>(url: string, option?: fetchOption, refresh?: boolean): FetchData<T> {
 	const [data, setData] = useState<T | null>(null);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [error, setError] = useState<Error | null>(null);
@@ -46,7 +46,7 @@ export default function UseFetch<T>(url: string, option?: fetchOption): FetchDat
 
 		fetchData();
 		/* eslint-disable */
-	}, [url]);
+	}, [url, refresh]);
 	/* eslint-enable */
 
 	return { data, isLoading, error };

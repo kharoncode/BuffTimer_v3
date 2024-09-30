@@ -1,5 +1,5 @@
 export const enum_mob = {
-	cadavre_nsanglante: 1,
+	cadavre_ensanglante: 1,
 	archer_squelette: 2,
 	goule: 3,
 	colosse_ossements: 4,
@@ -29,4 +29,8 @@ export const enum_mob = {
 		];
 		return str[value];
 	},
+};
+
+export const enum_mob_picture = {
+	[enum_mob.cadavre_ensanglante]: 'https://ideo-lejeu.com/ideov23/creatures/zombie.gif',
 };

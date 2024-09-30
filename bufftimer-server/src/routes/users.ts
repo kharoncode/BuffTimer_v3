@@ -14,9 +14,14 @@ usersRoute
 			return c.json({ error: 'Veuillez vous connecter !' }, 404);
 		}
 		const db = drizzle(c.env.DB);
-		//const resp = await db.select().from(users);
 		const resp = await db.select().from(users).where(eq(users.id, user.id));
-		return c.json(resp[0]);
+
+		if (resp.length > 0) {
+			const { password, ...userWithoutPassword } = resp[0];
+			return c.json(userWithoutPassword);
+		}
+
+		return c.json({ error: 'Utilisateur non trouvé' }, 404);
 	})
 	// .post('/', async (c) => {
 	// 	try {
@@ -40,14 +45,18 @@ usersRoute
 				return c.json({ msg: 'Veuillez vous connecter !' });
 			}
 			const db = drizzle(c.env.DB);
-			const { id, user } = await c.req.json();
-			if (!id) {
-				return c.json({ error: 'Un ID est requis.' }, 400);
+			const user = await db.select().from(users).where(eq(users.id, isUser.id));
+			const { password, updated_user } = await c.req.json();
+			console.log(password);
+			const validPassword = bcrypt.compareSync(password, user[0].password);
+			if (!validPassword) {
+				return c.json({ error: 'Invalid password.' }, 400);
+			}
+			if (updated_user.password) {
+				updated_user.password = bcrypt.hashSync(updated_user.password, 10);
 			}
 
-			user.password = bcrypt.hashSync(user.password, 10);
-
-			const resp = await db.update(users).set(user).where(eq(users.id, id)).returning();
+			const resp = await db.update(users).set(updated_user).where(eq(users.id, isUser.id)).returning();
 
 			if (resp.length > 0) {
 				return c.json(resp[0], 200);

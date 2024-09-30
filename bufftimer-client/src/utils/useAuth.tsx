@@ -1,12 +1,15 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import host from '../services/host';
 import { useNavigate } from 'react-router-dom';
+import { Character } from '@/services/types/character';
 
 type AuthContextType = {
 	isAuth: boolean;
 	loading: boolean;
 	setLogin: () => void;
 	setLogout: () => void;
+	characterList: Character[];
+	getCharacterList: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -14,7 +17,24 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const [isAuth, setIsAuth] = useState(false);
 	const [loading, setLoading] = useState(true);
+	const [characterList, setCharacterList] = useState<Character[]>([]);
 	const navigate = useNavigate();
+
+	const getCharacterList = async () => {
+		try {
+			const resp = await fetch(`${host}/characters`, {
+				method: 'GET',
+				credentials: 'include',
+			});
+
+			if (resp.ok) {
+				const data = (await resp.json()) as Character[];
+				setCharacterList(data);
+			}
+		} catch (error) {
+			console.error('Failed to check characters', error);
+		}
+	};
 
 	useEffect(() => {
 		const checkAuth = async () => {
@@ -31,6 +51,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 			}
 		};
 
+		getCharacterList();
+
 		checkAuth();
 	}, []);
 
@@ -40,7 +62,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		navigate('/');
 	};
 
-	return <AuthContext.Provider value={{ isAuth, loading, setLogin, setLogout }}>{children}</AuthContext.Provider>;
+	return (
+		<AuthContext.Provider value={{ isAuth, loading, setLogin, setLogout, characterList, getCharacterList }}>
+			{children}
+		</AuthContext.Provider>
+	);
 };
 
 export const useAuth = (): AuthContextType => {

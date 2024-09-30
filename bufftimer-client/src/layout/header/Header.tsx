@@ -7,17 +7,17 @@ import { useAuth } from '../../utils/useAuth';
 import { User } from '../../services/types/user';
 import UseFetch from '../../utils/useFetch';
 import infoIcone from '@assets/icones/info.svg';
-import { Character } from '@/services/types/character';
+//import { Character } from '@/services/types/character';
 import CharacterHeader from '@/components/header/characterHeader/CharacterHeader';
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const { isAuth, setLogout } = useAuth();
-	const { data: characters } = UseFetch<Character[]>(`${host}/characters`, {
-		method: 'GET',
-		credentials: 'include',
-	});
+	const { isAuth, setLogout, characterList } = useAuth();
+	// const { data: characters } = UseFetch<Character[]>(`${host}/characters`, {
+	// 	method: 'GET',
+	// 	credentials: 'include',
+	// });
 	const { data: user } = UseFetch<User>(`${host}/users`, {
 		method: 'GET',
 		credentials: 'include',
@@ -39,8 +39,8 @@ const Header = () => {
 				</NavLink>
 				{isAuth ? (
 					<>
-						{characters &&
-							characters.map((character) => (
+						{characterList &&
+							characterList.map((character) => (
 								<NavLink key={character.id} to={`/auth/character?id=${character.id}`} className={styles.header_authItem}>
 									<CharacterHeader character={character} />
 								</NavLink>

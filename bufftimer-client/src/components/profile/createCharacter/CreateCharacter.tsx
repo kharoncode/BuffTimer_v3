@@ -5,8 +5,15 @@ import ErrorMessage from '@/components/error-message/ErrorMessage';
 
 import { enum_realm } from '../../../../../bt_enum/enum_character';
 import { enum_god, enum_sphere, enum_magic_type, enum_god_sphere } from '../../../../../bt_enum/enum_mystique';
+import { useAuth } from '@/utils/useAuth';
 
-const CreateCharacter = ({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+const CreateCharacter = ({
+	setIsOpen,
+	onSuccess,
+}: {
+	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	onSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
 	const initialValue = {
 		name: '',
 		picture: '',
@@ -37,6 +44,8 @@ const CreateCharacter = ({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetSta
 		[enum_sphere.vitalite]: false,
 	};
 
+	const { getCharacterList } = useAuth();
+
 	const [formValid, setFormValid] = useState(initialState);
 	const [formValue, setFormValue] = useState(initialValue);
 	const [formError, setFormError] = useState(initialState);
@@ -51,7 +60,7 @@ const CreateCharacter = ({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetSta
 			setFormValid({ ...formValid, [name]: value.length > 2 ? true : false });
 			setFormError({ ...formError, [name]: value.length < 3 ? true : false });
 		} else if (name === 'picture') {
-			const pictureRegex = /^(https:\/\/.*\.(?:png|jpg|gif))/;
+			const pictureRegex = /^(https:\/\/.*\.(?:png|jpg|gif|jpeg))/;
 			setFormValue({ ...formValue, [name]: value });
 			setFormValid({ ...formValid, [name]: pictureRegex.test(value) });
 			setFormError({ ...formError, [name]: !pictureRegex.test(value) });
@@ -140,6 +149,8 @@ const CreateCharacter = ({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetSta
 			if (resp.ok) {
 				resetForm();
 				setIsOpen(false);
+				onSuccess((prev) => !prev);
+				getCharacterList();
 			}
 		}
 	};

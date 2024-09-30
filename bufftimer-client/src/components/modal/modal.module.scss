@@ -7,14 +7,17 @@
 
 .modal {
 	background: rgb(255, 255, 255, 0.5);
-	height: 100svh;
+	min-height: 100svh;
+	max-height: 100%;
 	width: 100svw;
 	padding: 50px;
 	display: flex;
 	justify-content: center;
 	&_container {
-		width: 500px;
 		height: fit-content;
+		max-height: 80svh;
+		overflow: hidden;
+		overflow-y: scroll;
 		position: relative;
 		border: 2px solid var(--color-hl1);
 		border-radius: 25px;
