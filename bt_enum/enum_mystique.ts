@@ -88,11 +88,3 @@ export const enum_magic_type = {
 		return str[value];
 	},
 };
-
-export const enum_spell = {
-	nature: 1,
-	ToString: (value: number): string | undefined => {
-		const str = [undefined, 'nature'];
-		return str[value];
-	},
-};

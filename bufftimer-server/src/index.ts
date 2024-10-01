@@ -32,7 +32,7 @@ app.route('/users', usersRoute);
 app.route('/auth', authRoute);
 app.route('/characters', charactersRoute);
 app.route('/monsters', monstersRoute);
-app.route('character-spells', characterSpellsRoute);
+app.route('/character-spells', characterSpellsRoute);
 
 app.get('/', (c) => {
 	return c.json({ msg: 'Welcome in BuffTimer !' });

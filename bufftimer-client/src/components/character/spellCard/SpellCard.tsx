@@ -2,6 +2,10 @@ import styles from './spellCard.module.css';
 import styled from 'styled-components';
 import { useState } from 'react';
 import Timer from '../timer/Timer';
+import { enum_spell_data as esd, enum_spell as e_spell } from '../../../../../bt_enum/enum_spell';
+import { enum_sphere as es } from '../../../../../bt_enum/enum_mystique';
+import host from '@/services/host';
+import { Spell } from '@/services/types/spell';
 
 const SpellContainer = styled.div<{ color: string }>`
 	position: relative;
@@ -30,21 +34,37 @@ const Container = styled.div<{ width: string; border: string }>`
 `;
 
 type data = {
-	id: string;
-	playerId: string;
-	name: string;
-	category: string;
-	date: number;
+	id: number;
+	character_id: number;
+	enum_spell: number;
+	created_at: number;
+	expires_at: number;
 	isOpen: boolean;
+	setSpellsList: React.Dispatch<React.SetStateAction<Spell[]>>;
 };
 
 const SpellCard: React.FC<data> = (data) => {
-	const { id, name, category, date, isOpen } = data;
+	const { id, enum_spell, expires_at, isOpen, setSpellsList } = data;
 	const [isOver, setIsOver] = useState(false);
+
+	const handleDelete = async () => {
+		const resp = await fetch(`${host}/character-spells`, {
+			method: 'DELETE',
+			credentials: 'include',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ id: id }),
+		});
+
+		if (resp.ok) {
+			const data: Spell[] = await resp.json();
+			setSpellsList(data);
+		}
+	};
+
 	if (isOver) {
-		console.log('Is Over');
+		handleDelete();
 	}
-	const deadLines = date - Date.now();
+	const deadLines = expires_at - Date.now();
 
 	const border =
 		deadLines < 43200000 && deadLines > 28800000
@@ -58,30 +78,34 @@ const SpellCard: React.FC<data> = (data) => {
 	const containerStyle = isOpen ? `width: 100%;` : ``;
 
 	const color =
-		category === 'justice'
+		esd[enum_spell].sphere === es.justice
 			? 'rgba(255, 186, 83, 1)'
-			: category === 'protection'
+			: esd[enum_spell].sphere === es.protection
 			? 'rgb(237, 244, 236)'
-			: category === 'negation'
+			: esd[enum_spell].sphere === es.negation
 			? 'rgb(210, 210, 210)'
-			: category === 'vitalite'
+			: esd[enum_spell].sphere === es.vitalite
 			? 'rgb(114, 244, 103)'
-			: category === 'destruction'
+			: esd[enum_spell].sphere === es.destruction
 			? 'rgb(255, 72, 23)'
 			: 'rgb(241, 200, 247)';
 	return (
 		<Container width={containerStyle} border={border}>
 			{isOpen ? (
 				<SpellContainer color={color}>
-					<img className={styles.spellPicture} src={`./pictures/spells/${id}.gif`} alt={`${name}`}></img>
+					<img className={styles.spellPicture} src={`/pictures/spells/${enum_spell}.gif`} alt={e_spell.ToString(enum_spell)}></img>
 
-					<div className={styles.title}>{name}</div>
-					<Timer date={date} setIsOver={setIsOver} isOpen={isOpen} />
+					<div className={styles.title}>{e_spell.ToString(enum_spell)}</div>
+					<Timer date={expires_at} setIsOver={setIsOver} isOpen={isOpen} />
 				</SpellContainer>
 			) : (
-				<span className={styles.spellPictureRound} title={`${name}`}>
-					<img className={styles.spellPictureRound} src={`./pictures/spells/${id}.gif`} alt={`${name}`}></img>
-					<Timer date={date} setIsOver={setIsOver} isOpen={isOpen} />
+				<span className={styles.spellPictureRound} title={e_spell.ToString(enum_spell)}>
+					<img
+						className={styles.spellPictureRound}
+						src={`/pictures/spells/${enum_spell}.gif`}
+						alt={`${e_spell.ToString(enum_spell)}`}
+					></img>
+					<Timer date={expires_at} setIsOver={setIsOver} isOpen={isOpen} />
 				</span>
 			)}
 		</Container>

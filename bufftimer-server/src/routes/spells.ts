@@ -13,7 +13,7 @@ characterSpellsRoute
 			return c.json({ error: 'Veuillez vous connecter !' }, 404);
 		}
 		const db = drizzle(c.env.DB);
-		const character_id = Number(c.req.param('id'));
+		const character_id = Number(c.req.query('id'));
 		if (character_id) {
 			const resp = await db.select().from(character_spells).where(eq(character_spells.character_id, character_id));
 
@@ -25,9 +25,9 @@ characterSpellsRoute
 	.post('/', async (c) => {
 		try {
 			const user = c.get('user');
-			if (!user) {
-				return c.json({ error: 'Veuillez vous connecter !' }, 404);
-			}
+			// if (!user) {
+			// 	return c.json({ error: 'Veuillez vous connecter !' }, 404);
+			// }
 			const db = drizzle(c.env.DB);
 			const spell = await c.req.json();
 			const resp = await db.insert(character_spells).values(spell).returning();
@@ -74,7 +74,7 @@ characterSpellsRoute
 			}
 			const resp = await db.delete(character_spells).where(eq(character_spells.id, id)).returning();
 			if (resp.length > 0) {
-				return c.json({ msg: 'Spell correctement supprimé !' }, 200);
+				return c.json(resp, 200);
 			} else {
 				return c.json({ error: 'Aucune modification effectuée.' }, 400);
 			}

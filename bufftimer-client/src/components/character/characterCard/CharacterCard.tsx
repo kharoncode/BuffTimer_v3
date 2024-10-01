@@ -2,7 +2,11 @@ import { Character } from '@/services/types/character';
 import styles from './characterCard.module.scss';
 import styled from 'styled-components';
 import LifeBar from '../lifeBar/lifeBar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import SpellCard from '../spellCard/SpellCard';
+//import UseFetch from '@/utils/useFetch';
+import { Spell } from '@/services/types/spell';
+import host from '@/services/host';
 
 const SpellContainer = styled.div<{ $flex: string }>`
 	align-self: flex-end;
@@ -15,8 +19,32 @@ const SpellContainer = styled.div<{ $flex: string }>`
 `;
 
 const CharacterCard = ({ character }: { character: Character }) => {
-	// const navigate = useNavigate();
 	const [isOpen, setOpen] = useState(false);
+	const [spellsList, setSpellsList] = useState<Spell[]>([]);
+
+	useEffect(() => {
+		const fetchSpellsList = async () => {
+			try {
+				const resp = await fetch(`${host}/character-spells?id=${character.id}`, {
+					method: 'GET',
+					credentials: 'include',
+				});
+				if (resp.ok) {
+					const data: Spell[] = await resp.json();
+					setSpellsList(data);
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		fetchSpellsList();
+	}, [character.id]);
+
+	// const { data: spellsList } = UseFetch<Spell[]>(`${host}/character-spells?id=${character.id}`, {
+	// 	method: 'GET',
+	// 	credentials: 'include',
+	// });
+
 	const style: string = isOpen
 		? `flex-direction: column;
     align-items: center;
@@ -39,28 +67,27 @@ const CharacterCard = ({ character }: { character: Character }) => {
 				<div className={styles.title}>{character.name}</div>
 				<LifeBar life={{ maxLife: character.max_life, currentLife: character.current_life }} />
 			</div>
-			<SpellContainer
-				onClick={() => {
-					setOpen(!isOpen);
-				}}
-				$flex={style}
-			>
-				{/* {Object.values(player.spells).map((el) =>
-                el.date === null ? (
-                   <></>
-                ) : (
-                   <SpellCard
-                      key={`${player.id}-${el.id}-spell`}
-                      id={el.id}
-                      playerId={player.id}
-                      name={el.name}
-                      category={el.category}
-                      date={Number(el.date)}
-                      isOpen={isOpen}
-                   />
-                )
-             )} */}
-			</SpellContainer>
+			{spellsList && (
+				<SpellContainer
+					onClick={() => {
+						setOpen(!isOpen);
+					}}
+					$flex={style}
+				>
+					{spellsList.map((spell) => (
+						<SpellCard
+							key={`${character.id}-${spell.id}-spell`}
+							id={spell.id}
+							enum_spell={spell.enum_spell}
+							character_id={character.id}
+							created_at={spell.created_at}
+							expires_at={Number(spell.expires_at)}
+							isOpen={isOpen}
+							setSpellsList={setSpellsList}
+						/>
+					))}
+				</SpellContainer>
+			)}
 		</div>
 	);
 };
