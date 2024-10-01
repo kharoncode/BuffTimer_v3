@@ -53,10 +53,10 @@ const character_spells = sqliteTable('character_spells', {
 		.notNull()
 		.references(() => characters.id, { onDelete: 'cascade' }),
 	enum_spell: integer('enum_spell').notNull(),
-	created_at: text('created_at')
+	created_at: integer('created_at')
 		.notNull()
-		.default(sql`(current_timestamp)`),
-	expires_at: text('expires_at').notNull(),
+		.default(sql`(unixepoch()*1000)`),
+	expires_at: integer('expires_at').notNull(),
 });
 
 const monster_spells = sqliteTable('monster_spells', {
@@ -65,10 +65,10 @@ const monster_spells = sqliteTable('monster_spells', {
 		.notNull()
 		.references(() => monsters.id, { onDelete: 'cascade' }),
 	enum_spell: integer('enum_spell').notNull(),
-	created_at: text('created_at')
+	created_at: integer('created_at')
 		.notNull()
-		.default(sql`(current_timestamp)`),
-	expires_At: text('expires_at').notNull(),
+		.default(sql`(unixepoch()*1000)`),
+	expires_at: integer('expires_at').notNull(),
 });
 
 const groups = sqliteTable('groups', {

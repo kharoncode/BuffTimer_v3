@@ -2,9 +2,9 @@ import { Character } from '@/services/types/character';
 import styles from './characterCard.module.scss';
 import styled from 'styled-components';
 import LifeBar from '../lifeBar/lifeBar';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SpellCard from '../spellCard/SpellCard';
-//import UseFetch from '@/utils/useFetch';
+import UseFetch from '@/utils/useFetch';
 import { Spell } from '@/services/types/spell';
 import host from '@/services/host';
 
@@ -20,30 +20,16 @@ const SpellContainer = styled.div<{ $flex: string }>`
 
 const CharacterCard = ({ character }: { character: Character }) => {
 	const [isOpen, setOpen] = useState(false);
-	const [spellsList, setSpellsList] = useState<Spell[]>([]);
+	const [refresh, setRefresh] = useState(false);
 
-	useEffect(() => {
-		const fetchSpellsList = async () => {
-			try {
-				const resp = await fetch(`${host}/character-spells?id=${character.id}`, {
-					method: 'GET',
-					credentials: 'include',
-				});
-				if (resp.ok) {
-					const data: Spell[] = await resp.json();
-					setSpellsList(data);
-				}
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		fetchSpellsList();
-	}, [character.id]);
-
-	// const { data: spellsList } = UseFetch<Spell[]>(`${host}/character-spells?id=${character.id}`, {
-	// 	method: 'GET',
-	// 	credentials: 'include',
-	// });
+	const { data: spellsList } = UseFetch<Spell[]>(
+		`${host}/character-spells?id=${character.id}`,
+		{
+			method: 'GET',
+			credentials: 'include',
+		},
+		refresh
+	);
 
 	const style: string = isOpen
 		? `flex-direction: column;
@@ -83,7 +69,7 @@ const CharacterCard = ({ character }: { character: Character }) => {
 							created_at={spell.created_at}
 							expires_at={Number(spell.expires_at)}
 							isOpen={isOpen}
-							setSpellsList={setSpellsList}
+							setRefresh={setRefresh}
 						/>
 					))}
 				</SpellContainer>

@@ -5,7 +5,6 @@ import Timer from '../timer/Timer';
 import { enum_spell_data as esd, enum_spell as e_spell } from '../../../../../bt_enum/enum_spell';
 import { enum_sphere as es } from '../../../../../bt_enum/enum_mystique';
 import host from '@/services/host';
-import { Spell } from '@/services/types/spell';
 
 const SpellContainer = styled.div<{ color: string }>`
 	position: relative;
@@ -40,11 +39,11 @@ type data = {
 	created_at: number;
 	expires_at: number;
 	isOpen: boolean;
-	setSpellsList: React.Dispatch<React.SetStateAction<Spell[]>>;
+	setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const SpellCard: React.FC<data> = (data) => {
-	const { id, enum_spell, expires_at, isOpen, setSpellsList } = data;
+	const { id, enum_spell, expires_at, isOpen, setRefresh } = data;
 	const [isOver, setIsOver] = useState(false);
 
 	const handleDelete = async () => {
@@ -56,8 +55,7 @@ const SpellCard: React.FC<data> = (data) => {
 		});
 
 		if (resp.ok) {
-			const data: Spell[] = await resp.json();
-			setSpellsList(data);
+			setRefresh((prev) => !prev);
 		}
 	};
 

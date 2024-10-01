@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { drizzle } from 'drizzle-orm/d1';
 import { characters } from '../db/schema';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, ne } from 'drizzle-orm';
 import { Bindings, Variables } from '../lib/bindings';
 
 const charactersRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>();
@@ -22,14 +22,26 @@ charactersRoute
 
 			if (resp.length === 0) {
 				return c.json({ error: 'Personnage introuvable ou non autorisé.' }, 404);
+			} else {
+				const realm_characters = await db
+					.select()
+					.from(characters)
+					.where(and(eq(characters.enum_realm, resp[0].enum_realm), ne(characters.id, resp[0].id)));
+
+				return c.json({ character: resp[0], characterRealmList: realm_characters });
 			}
-
-			return c.json(resp[0]);
 		} else {
-			const resp = await db.select().from(characters).where(eq(characters.user_id, user.id));
-
-			return c.json(resp);
+			return c.json({ error: 'Un id est requis !' });
 		}
+	})
+	.get('/user', async (c) => {
+		const user = c.get('user');
+		if (!user) {
+			return c.json({ error: 'Veuillez vous connecter !' }, 404);
+		}
+		const db = drizzle(c.env.DB);
+		const resp = await db.select().from(characters).where(eq(characters.user_id, user.id));
+		return c.json(resp);
 	})
 	.get('/all', async (c) => {
 		const user = c.get('user');
@@ -37,14 +49,9 @@ charactersRoute
 			return c.json({ error: 'Veuillez vous connecter !' }, 404);
 		}
 		const db = drizzle(c.env.DB);
-		const enum_realm = Number(c.req.query('realm'));
-		if (enum_realm) {
-			const resp = await db.select().from(characters).where(eq(characters.enum_realm, enum_realm));
-			return c.json(resp);
-		} else {
-			const resp = await db.select().from(characters);
-			return c.json(resp);
-		}
+
+		const resp = await db.select().from(characters);
+		return c.json(resp);
 	})
 	.post('/', async (c) => {
 		try {

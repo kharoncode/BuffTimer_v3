@@ -22,7 +22,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
 	const getCharacterList = async () => {
 		try {
-			const resp = await fetch(`${host}/characters`, {
+			const resp = await fetch(`${host}/characters/user`, {
 				method: 'GET',
 				credentials: 'include',
 			});

@@ -16,7 +16,7 @@ const Profile = () => {
 	const [whichForm, setWichForm] = useState<string>('monster');
 
 	const { data: characters } = UseFetch<Character[]>(
-		`${host}/characters`,
+		`${host}/characters/user`,
 		{
 			method: 'GET',
 			credentials: 'include',
