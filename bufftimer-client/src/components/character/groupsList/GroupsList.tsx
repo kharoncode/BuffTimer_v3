@@ -33,6 +33,7 @@ const GroupsList = ({ id }: { id: number }) => {
 		});
 
 		if (resp.ok) {
+			setGroupSelected(0);
 			setRefresh((prev) => !prev);
 		}
 	};
@@ -66,7 +67,7 @@ const GroupsList = ({ id }: { id: number }) => {
 				</div>
 				<div className={styles.container_right}>
 					{data && groupSelected !== 0 && (
-						<GroupShow id={groupSelected} name={data?.filter((el) => el.group_id === groupSelected)[0].group_name} />
+						<GroupShow group_id={groupSelected} name={data?.filter((el) => el.group_id === groupSelected)[0].group_name} />
 					)}
 				</div>
 			</div>

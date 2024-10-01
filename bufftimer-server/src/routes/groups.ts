@@ -160,6 +160,21 @@ groupsRoute
 	// 	return c.json({ error: 'Un id est requis !' });
 	// }
 	// })
+	.post('/addCharacter', async (c) => {
+		try {
+			const user = c.get('user');
+			if (!user) {
+				return c.json({ error: 'Veuillez vous connecter !' }, 404);
+			}
+			const db = drizzle(c.env.DB);
+			const group_character = await c.req.json();
+			const resp = await db.insert(group_characters).values(group_character).returning();
+			return c.json(resp, 200);
+		} catch (error) {
+			console.error("Erreur lors de l'ajout d'un personnage dans le groupe:", error);
+			return c.json({ error: "Une erreur s'est produite lors de l'ajout d'un personnage dans le groupe." }, 500);
+		}
+	})
 	.post('/', async (c) => {
 		try {
 			const user = c.get('user');
