@@ -1,0 +1,70 @@
+.container {
+	width: 100%;
+	max-width: 500px;
+	min-width: 300px;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	gap: 5px;
+	margin-bottom: 20px;
+}
+
+.status {
+	position: relative;
+	padding-left: 50px;
+	border: solid 2px rgb(165, 157, 139);
+	border-radius: 0 25px 0 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 70px;
+	width: 100%;
+	background: rgb(252, 242, 218);
+}
+
+.title {
+	text-transform: uppercase;
+	font-size: 1.5em;
+	font-weight: 600;
+}
+
+.editButton {
+	position: absolute;
+	top: 13px;
+	right: 15px;
+	width: 15px;
+	cursor: pointer;
+}
+
+.editButton:hover {
+	filter: invert(70%) sepia(51%) saturate(3131%) hue-rotate(358deg) brightness(102%) contrast(106%);
+}
+
+.playerPicture {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translate(-50%, -50%);
+	object-fit: cover;
+	width: 108px;
+	height: 108px;
+	border-radius: 50%;
+	background-color: rgb(252, 242, 218);
+	border-width: 8px;
+	border-color: rgb(165, 157, 139);
+	border-style: double;
+}
+
+@media screen and (max-width: 700px) {
+	.status {
+		padding-left: 35px;
+		border-radius: 0 25px 0 0;
+	}
+	.playerPicture {
+		width: 70px;
+		height: 70px;
+		border-radius: 25px;
+		border-width: 5px;
+	}
+}

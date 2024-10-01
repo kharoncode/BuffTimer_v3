@@ -8,6 +8,27 @@
       "when": 1727535720454,
       "tag": "0000_furry_tenebrous",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1727773533572,
+      "tag": "0001_cloudy_solo",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1727773672533,
+      "tag": "0002_damp_marauders",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1727773761193,
+      "tag": "0003_fearless_deathstrike",
+      "breakpoints": true
     }
   ]
 }

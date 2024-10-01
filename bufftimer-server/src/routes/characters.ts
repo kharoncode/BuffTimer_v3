@@ -13,12 +13,12 @@ charactersRoute
 			return c.json({ error: 'Veuillez vous connecter !' }, 404);
 		}
 		const db = drizzle(c.env.DB);
-		const characterId = Number(c.req.query('id'));
-		if (characterId) {
+		const character_id = Number(c.req.query('id'));
+		if (character_id) {
 			const resp = await db
 				.select()
 				.from(characters)
-				.where(and(eq(characters.user_id, user.id), eq(characters.id, characterId)));
+				.where(and(eq(characters.user_id, user.id), eq(characters.id, character_id)));
 
 			if (resp.length === 0) {
 				return c.json({ error: 'Personnage introuvable ou non autorisé.' }, 404);
@@ -28,6 +28,21 @@ charactersRoute
 		} else {
 			const resp = await db.select().from(characters).where(eq(characters.user_id, user.id));
 
+			return c.json(resp);
+		}
+	})
+	.get('/all', async (c) => {
+		const user = c.get('user');
+		if (!user) {
+			return c.json({ error: 'Veuillez vous connecter !' }, 404);
+		}
+		const db = drizzle(c.env.DB);
+		const enum_realm = Number(c.req.query('realm'));
+		if (enum_realm) {
+			const resp = await db.select().from(characters).where(eq(characters.enum_realm, enum_realm));
+			return c.json(resp);
+		} else {
+			const resp = await db.select().from(characters);
 			return c.json(resp);
 		}
 	})

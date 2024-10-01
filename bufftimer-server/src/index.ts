@@ -7,6 +7,7 @@ import usersRoute from './routes/users';
 import authRoute from './routes/auth';
 import charactersRoute from './routes/characters';
 import monstersRoute from './routes/monsters';
+import characterSpellsRoute from './routes/spells';
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>();
 app.use('*', (c, next) => {
@@ -31,6 +32,7 @@ app.route('/users', usersRoute);
 app.route('/auth', authRoute);
 app.route('/characters', charactersRoute);
 app.route('/monsters', monstersRoute);
+app.route('character-spells', characterSpellsRoute);
 
 app.get('/', (c) => {
 	return c.json({ msg: 'Welcome in BuffTimer !' });

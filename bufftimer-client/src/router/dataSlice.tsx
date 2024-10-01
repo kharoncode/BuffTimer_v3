@@ -1,5 +1,4 @@
 import { data_type } from '@/services/type_data';
-import type { player } from '@/utils/formatPlayer';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const fetchData = createAsyncThunk('data/fetchData', async () => {
@@ -50,7 +49,6 @@ type DataMagie = {
 type dataState = {
 	loading: boolean;
 	data: {
-		fakeUser: { [key: string]: player };
 		pages: dataPages;
 		magie: DataMagie;
 		skills: { [key: string]: { name: string; time: number } };
@@ -61,7 +59,6 @@ type dataState = {
 const initialState: dataState = {
 	loading: false,
 	data: {
-		fakeUser: {},
 		pages: {},
 		magie: { gods: {}, spheres: {}, spells: {} },
 		skills: {},

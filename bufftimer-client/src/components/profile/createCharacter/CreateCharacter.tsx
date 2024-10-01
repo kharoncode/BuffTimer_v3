@@ -60,7 +60,8 @@ const CreateCharacter = ({
 			setFormValid({ ...formValid, [name]: value.length > 2 ? true : false });
 			setFormError({ ...formError, [name]: value.length < 3 ? true : false });
 		} else if (name === 'picture') {
-			const pictureRegex = /^(https:\/\/.*\.(?:png|jpg|gif|jpeg))/;
+			//const pictureRegex = /^(https:\/\/.*\.(?:png|jpg|gif|jpeg))/;
+			const pictureRegex = /^(https?:\/\/.*)/;
 			setFormValue({ ...formValue, [name]: value });
 			setFormValid({ ...formValid, [name]: pictureRegex.test(value) });
 			setFormError({ ...formError, [name]: !pictureRegex.test(value) });
@@ -300,7 +301,7 @@ const CreateCharacter = ({
 												(Object.values(formSphere).filter((el) => el === true).length >= 3 && formSphere[value] === false) ||
 												formValue.enum_god === 0 ||
 												formValue.enum_magic_type != enum_magic_type.profane ||
-												value === enum_sphere.protection
+												[enum_sphere.protection, enum_sphere.justice].includes(value)
 											}
 										/>
 									</div>
