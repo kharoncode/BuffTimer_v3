@@ -130,7 +130,6 @@ const Settings = () => {
 			});
 
 			if (resp.ok) {
-				console.log(resp);
 				setFormPasswordValue({ oldPassword: '', newPassword: '', newPassword2: '' });
 			}
 		}

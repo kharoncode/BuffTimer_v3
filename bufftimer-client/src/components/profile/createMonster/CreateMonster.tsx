@@ -26,8 +26,6 @@ const CreateMonster = ({
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		const { name, value } = event.target;
-
-		console.log(name, value);
 		if (name === 'name') {
 			setFormValue({ ...formValue, [name]: value });
 			setFormValid({ ...formValid, [name]: value.length > 2 ? true : false });
@@ -52,7 +50,6 @@ const CreateMonster = ({
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		if (isFormValid()) {
-			console.log(formValue);
 			const resp = await fetch(`${host}/monsters`, {
 				method: 'POST',
 				credentials: 'include',

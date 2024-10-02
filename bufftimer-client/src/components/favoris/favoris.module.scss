@@ -1,0 +1,28 @@
+.container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
+}
+
+.select {
+	display: flex;
+	gap: 20px;
+	margin-bottom: 30px;
+}
+
+.favorisCard {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	align-items: center;
+	& svg {
+		cursor: pointer;
+		width: 30px;
+		&:hover {
+			fill: var(--color-hl1);
+		}
+	}
+}

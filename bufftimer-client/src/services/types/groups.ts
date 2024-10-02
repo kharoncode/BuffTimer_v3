@@ -9,7 +9,7 @@ export type Group = {
 
 export type Group_Show = {
 	id: number;
-	characters: Character[];
+	characters: { character: Character; group_characters_id: number }[];
 	enemies: {
 		characters: Character[];
 		monsters: Monster[];

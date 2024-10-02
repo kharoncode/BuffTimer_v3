@@ -53,8 +53,6 @@ const CreateCharacter = ({
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		const { name, value } = event.target;
-
-		console.log(name, value);
 		if (name === 'name') {
 			setFormValue({ ...formValue, [name]: value });
 			setFormValid({ ...formValid, [name]: value.length > 2 ? true : false });
@@ -110,7 +108,6 @@ const CreateCharacter = ({
 				...formValid,
 				sphere: Object.values(sphere).filter((el) => el === true).length === 3,
 			});
-			console.log('lg', Object.values(sphere).filter((el) => el === true).length);
 			setFormSphere({ ...formSphere, [Number(value)]: !formSphere[Number(value)] });
 		}
 	};
@@ -139,7 +136,7 @@ const CreateCharacter = ({
 		event.preventDefault();
 		if (isFormValid()) {
 			const data = { ...formValue, sphere: addSphere() };
-			console.log(data);
+
 			const resp = await fetch(`${host}/characters`, {
 				method: 'POST',
 				credentials: 'include',

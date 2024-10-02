@@ -29,8 +29,6 @@ const EditMonster = ({
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		const { name, value } = event.target;
-
-		console.log(name, value);
 		if (name === 'name') {
 			setFormValue({ ...formValue, [name]: value });
 			setFormValid({ ...formValid, [name]: value.length > 2 ? true : false });

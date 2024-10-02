@@ -7,7 +7,8 @@ import { enum_realm as er } from '../../../../bt_enum/enum_character';
 import CharactersList from '@/components/character/charactersList/CharactersList';
 import CharacterCard from '@/components/character/characterCard/CharacterCard';
 import { useEffect, useState } from 'react';
-import GroupsList from '@/components/character/groupsList/GroupsList';
+import GroupsList from '@/components/character/groups/groupsList/GroupsList';
+import Favoris from '@/components/favoris/Favoris';
 
 const CharacterPage = () => {
 	const [searchParams] = useSearchParams();
@@ -44,7 +45,7 @@ const CharacterPage = () => {
 					<div className={styles.dashboard_window}>
 						{windowContent === 'realm' && <CharactersList list={characterRealmList} />}
 						{windowContent === 'groupes' && <GroupsList id={character.id} />}
-						{windowContent === 'favoris' && <div>Favoris</div>}
+						{windowContent === 'favoris' && <Favoris id={character.id} />}
 					</div>
 				</div>
 			</div>

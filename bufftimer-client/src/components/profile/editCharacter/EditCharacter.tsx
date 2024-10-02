@@ -117,7 +117,6 @@ const EditCharacter = ({
 				...formValid,
 				sphere: Object.values(sphere).filter((el) => el === true).length === 3,
 			});
-			console.log('lg', Object.values(sphere).filter((el) => el === true).length);
 			setFormSphere({ ...formSphere, [Number(value)]: !formSphere[Number(value)] });
 		}
 	};

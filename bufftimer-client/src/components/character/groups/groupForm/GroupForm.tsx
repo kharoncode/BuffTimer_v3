@@ -1,5 +1,5 @@
 import host from '@/services/host';
-import styles from '../../profile/createCharacter/createCharacter.module.scss';
+import styles from '../../../profile/createCharacter/createCharacter.module.scss';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import ErrorMessage from '@/components/error-message/ErrorMessage';
 
@@ -45,7 +45,6 @@ const GroupForm = ({
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		if (isFormValid()) {
-			console.log(formValue);
 			const resp = await fetch(`${host}/groups`, {
 				method: 'POST',
 				credentials: 'include',

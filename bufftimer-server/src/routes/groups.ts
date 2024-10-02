@@ -19,6 +19,7 @@ groupsRoute
 				.select({
 					group_id: groups.id,
 					group_name: groups.name,
+					creator_id: groups.creator_id,
 				})
 				.from(groups)
 				.leftJoin(group_characters, eq(group_characters.group_id, groups.id))
@@ -39,18 +40,20 @@ groupsRoute
 		if (group_id) {
 			const charactersGroupListRow = await db
 				.select({
-					id: characters.id,
-					user_id: characters.user_id,
-					name: characters.name,
-					picture: characters.picture,
-					enum_realm: characters.enum_realm,
-					intelligence: characters.intelligence,
-					current_life: characters.current_life,
-					max_life: characters.max_life,
-					message: characters.message,
-					enum_god: characters.enum_god,
-					enum_magic_type: characters.enum_magic_type,
-					sphere: characters.sphere,
+					// id: characters.id,
+					// user_id: characters.user_id,
+					// name: characters.name,
+					// picture: characters.picture,
+					// enum_realm: characters.enum_realm,
+					// intelligence: characters.intelligence,
+					// current_life: characters.current_life,
+					// max_life: characters.max_life,
+					// message: characters.message,
+					// enum_god: characters.enum_god,
+					// enum_magic_type: characters.enum_magic_type,
+					// sphere: characters.sphere,
+					character: characters,
+					group_characters_id: group_characters.id,
 				})
 				.from(group_characters)
 				.leftJoin(characters, eq(group_characters.character_id, characters.id))
@@ -160,7 +163,7 @@ groupsRoute
 	// 	return c.json({ error: 'Un id est requis !' });
 	// }
 	// })
-	.post('/addCharacter', async (c) => {
+	.post('/addGoodCharacter', async (c) => {
 		try {
 			const user = c.get('user');
 			if (!user) {
@@ -205,6 +208,27 @@ groupsRoute
 			const resp = await db.delete(groups).where(eq(groups.id, id)).returning();
 			if (resp.length > 0) {
 				return c.json({ msg: 'Group correctement supprimé !' }, 200);
+			} else {
+				return c.json({ error: 'Aucune modification effectuée.' }, 400);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	})
+	.delete('/deleteGoodCharacter', async (c) => {
+		try {
+			const user = c.get('user');
+			if (!user) {
+				return c.json({ msg: 'Veuillez vous connecter !' });
+			}
+			const db = drizzle(c.env.DB);
+			const { id } = await c.req.json();
+			if (!id) {
+				return c.json({ error: 'Un ID est requis.' }, 400);
+			}
+			const resp = await db.delete(group_characters).where(eq(group_characters.id, id)).returning();
+			if (resp.length > 0) {
+				return c.json({ msg: 'Favoris correctement supprimé !' }, 200);
 			} else {
 				return c.json({ error: 'Aucune modification effectuée.' }, 400);
 			}
