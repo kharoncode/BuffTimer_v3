@@ -17,6 +17,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const [isAuth, setIsAuth] = useState(false);
 	const [loading, setLoading] = useState(true);
+	const [refresh, setRefresh] = useState(false);
 	const [characterList, setCharacterList] = useState<Character[]>([]);
 	const navigate = useNavigate();
 
@@ -54,9 +55,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		getCharacterList();
 
 		checkAuth();
-	}, []);
+	}, [refresh]);
 
-	const setLogin = () => setIsAuth(true);
+	const setLogin = () => {
+		setIsAuth(true);
+		setRefresh((prev) => !prev);
+	};
 	const setLogout = () => {
 		setIsAuth(false);
 		navigate('/');

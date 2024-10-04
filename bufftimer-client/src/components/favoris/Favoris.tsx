@@ -73,7 +73,7 @@ const Favoris = ({ id }: { id: number }) => {
 									}) && character.id !== id
 							)
 							.map((character) => (
-								<option key={`${character.id}_option`} value={character.id}>
+								<option className={styles[`select_option__${character.enum_realm}`]} key={`${character.id}_option`} value={character.id}>
 									{character.name}
 								</option>
 							))}
