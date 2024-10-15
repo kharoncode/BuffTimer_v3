@@ -15,12 +15,17 @@ type Type_EditSpell = {
 const EditSpell = ({ characterId, spellList, setRefresh }: Type_EditSpell) => {
 	const [searchParams] = useSearchParams();
 	const casterId = Number(searchParams.get('id'));
+	const casterSphere = searchParams
+		.get('sphere')
+		?.split('')
+		.map((el) => Number(el));
 	const [spell, setSpell] = useState(0);
 	const [isCurrentSpell, setIsCurrentSpell] = useState(0);
 	const [currentSpellTime, setCurrentSpellTime] = useState({ day: 0, hour: 0, minute: 1 });
 
 	const options = Object.keys(enum_spell)
 		.filter((key) => typeof enum_spell[key as keyof typeof enum_spell] === 'number')
+		.filter((key) => casterSphere && casterSphere.includes(esd[Number(enum_spell[key as keyof typeof enum_spell])].sphere))
 		.sort((a, b) => (a > b ? 1 : -1))
 		.map((key) => {
 			const value = Number(enum_spell[key as keyof typeof enum_spell]);

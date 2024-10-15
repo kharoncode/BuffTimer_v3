@@ -41,7 +41,11 @@ const Header = () => {
 					<>
 						{characterList &&
 							characterList.map((character) => (
-								<NavLink key={character.id} to={`/auth/character?id=${character.id}`} className={styles.header_authItem}>
+								<NavLink
+									key={character.id}
+									to={`/auth/character?id=${character.id}&sphere=${character.sphere}`}
+									className={styles.header_authItem}
+								>
 									<CharacterHeader character={character} />
 								</NavLink>
 							))}

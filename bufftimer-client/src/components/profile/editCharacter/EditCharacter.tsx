@@ -49,6 +49,15 @@ const EditCharacter = ({
 		[enum_sphere.vitalite]: false,
 	};
 
+	const resetInitialSphere = {
+		[enum_sphere.destruction]: false,
+		[enum_sphere.alteration]: false,
+		[enum_sphere.justice]: false,
+		[enum_sphere.negation]: false,
+		[enum_sphere.protection]: false,
+		[enum_sphere.vitalite]: false,
+	};
+
 	character.sphere
 		.toString()
 		.split('')
@@ -89,25 +98,25 @@ const EditCharacter = ({
 			setFormError({ ...formError, [name]: Number(value) < 1 ? true : false });
 		} else if (name === 'enum_god') {
 			if (Number(value) === enum_god.keldar) {
-				const sphere = { ...initialSphere };
+				const sphere = { ...resetInitialSphere };
 				enum_god_sphere[Number(value)].map((el) => (sphere[el] = true));
 				setFormSphere(sphere);
 				setFormValid({ ...formValid, [name]: Number(value) != 0, enum_magic_type: true, sphere: true });
 				setFormValue({ ...formValue, enum_god: enum_god.keldar, enum_magic_type: enum_magic_type.divine });
 			} else {
-				setFormSphere(initialSphere);
+				setFormSphere(resetInitialSphere);
 				setFormValid({ ...formValid, [name]: Number(value) != 0, enum_magic_type: false });
 				setFormValue({ ...formValue, enum_god: Number(value), enum_magic_type: 0 });
 			}
 		} else if (name === 'enum_magic_type') {
 			setFormValue({ ...formValue, [name]: Number(value) });
 			if (Number(value) === enum_magic_type.divine) {
-				const sphere = { ...initialSphere };
+				const sphere = { ...resetInitialSphere };
 				enum_god_sphere[formValue.enum_god].map((el) => (sphere[el] = true));
 				setFormSphere(sphere);
 				setFormValid({ ...formValid, [name]: Number(value) != 0, sphere: true });
 			} else {
-				setFormSphere(initialSphere);
+				setFormSphere(resetInitialSphere);
 				setFormValid({ ...formValid, [name]: Number(value) != 0, sphere: false });
 			}
 		} else if (name === 'sphere') {

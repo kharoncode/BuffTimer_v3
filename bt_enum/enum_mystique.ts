@@ -65,7 +65,7 @@ export const enum_god_sphere = {
 	[enum_god.lorikiel]: [enum_sphere.protection, enum_sphere.vitalite, enum_sphere.alteration],
 	[enum_god.shadaliel]: [enum_sphere.protection, enum_sphere.negation, enum_sphere.alteration],
 	[enum_god.ulmidiel]: [enum_sphere.protection, enum_sphere.vitalite, enum_sphere.alteration],
-	[enum_god.velaniel]: [enum_sphere.vitalite, enum_sphere.destruction],
+	[enum_god.velaniel]: [enum_sphere.protection, enum_sphere.destruction],
 	[enum_god.aldmenir]: [enum_sphere.protection, enum_sphere.vitalite, enum_sphere.alteration],
 	[enum_god.azolth]: [enum_sphere.protection, enum_sphere.negation, enum_sphere.alteration],
 	[enum_god.dallia]: [enum_sphere.protection, enum_sphere.vitalite, enum_sphere.alteration],
