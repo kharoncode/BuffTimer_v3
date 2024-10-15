@@ -57,6 +57,7 @@ authRoute.post('/signup', async (c) => {
 });
 
 authRoute.post('/logout', async (c) => {
+	console.log('test');
 	try {
 		const db = drizzle(c.env.DB);
 		const lucia = initializeLucia(c.env.DB);

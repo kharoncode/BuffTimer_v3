@@ -24,11 +24,14 @@ const Header = () => {
 	});
 
 	const logOut = async () => {
-		await fetch(`${host}/auth/logout`, { method: 'POST', credentials: 'include' }).then((resp) => {
-			if (resp.ok) {
-				setLogout();
-			}
+		const resp = await fetch(`${host}/auth/logout`, {
+			method: 'POST',
+			credentials: 'include',
+			headers: { 'Content-Type': 'application/json' },
 		});
+		if (resp.ok) {
+			setLogout();
+		}
 	};
 
 	return (
