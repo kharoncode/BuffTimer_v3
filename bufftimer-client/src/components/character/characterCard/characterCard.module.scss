@@ -29,16 +29,19 @@
 	font-weight: 600;
 }
 
-.editButton {
+.editContainer {
 	position: absolute;
 	top: 13px;
 	right: 15px;
-	width: 15px;
-	cursor: pointer;
-}
-
-.editButton:hover {
-	filter: invert(70%) sepia(51%) saturate(3131%) hue-rotate(358deg) brightness(102%) contrast(106%);
+	width: 50px;
+	display: flex;
+	justify-content: space-around;
+	& svg {
+		cursor: pointer;
+		&:hover {
+			fill: var(--color-hl1);
+		}
+	}
 }
 
 .playerPicture {

@@ -5,64 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1727535720454,
-      "tag": "0000_furry_tenebrous",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1727773533572,
-      "tag": "0001_cloudy_solo",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1727773672533,
-      "tag": "0002_damp_marauders",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1727773761193,
-      "tag": "0003_fearless_deathstrike",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "6",
-      "when": 1727806918593,
-      "tag": "0004_omniscient_monster_badoon",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "6",
-      "when": 1727806972454,
-      "tag": "0005_elite_the_hand",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "6",
-      "when": 1727806989518,
-      "tag": "0006_awesome_redwing",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "6",
-      "when": 1727807219336,
-      "tag": "0007_outstanding_forgotten_one",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "6",
-      "when": 1727807227482,
-      "tag": "0008_smart_cerebro",
+      "when": 1729011826654,
+      "tag": "0000_lying_rawhide_kid",
       "breakpoints": true
     }
   ]

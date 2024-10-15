@@ -31,5 +31,9 @@
 		cursor: pointer;
 		top: 20px;
 		right: 20px;
+		width: 20px;
+		&:hover {
+			fill: var(--color-hl1);
+		}
 	}
 }

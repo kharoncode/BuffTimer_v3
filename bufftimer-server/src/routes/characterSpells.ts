@@ -1,8 +1,9 @@
 import { Hono } from 'hono';
 import { drizzle } from 'drizzle-orm/d1';
-import { character_spells } from '../db/schema';
+import { character_spells, characters } from '../db/schema';
 import { eq, and, lt } from 'drizzle-orm';
 import { Bindings, Variables } from '../lib/bindings';
+import { enum_spell_data as esd } from '../../../bt_enum/enum_spell';
 
 const characterSpellsRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>();
 
@@ -33,7 +34,11 @@ characterSpellsRoute
 				return c.json({ error: 'Veuillez vous connecter !' }, 404);
 			}
 			const db = drizzle(c.env.DB);
-			const spell = await c.req.json();
+			const { caster_id, spell } = await c.req.json();
+			if (spell.expires_at === 0) {
+				const caster = await db.select({ intelligence: characters.intelligence }).from(characters).where(eq(characters.id, caster_id));
+				spell.expires_at = esd[spell.enum_spell].time * caster[0].intelligence + Date.now();
+			}
 			const isSpell = await db
 				.select()
 				.from(character_spells)
