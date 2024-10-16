@@ -99,7 +99,7 @@ const GroupShow = ({ group_id, name }: { group_id: number; name: string }) => {
 							.filter((character) => character.character.id !== casterId)
 							.map((character) => (
 								<div key={`${character.character.id}_character`} className={styles.arene_team_character}>
-									<CharacterCard character={character.character} />
+									<CharacterCard character={character.character} setRefreshCharacter={setRefresh} />
 									{character.character.id !== data.characters[0].character.id && (
 										<svg
 											onClick={() => handleDelete(character.group_characters_id)}

@@ -18,12 +18,17 @@ const CharacterPage = () => {
 	const [windowContent, setWindow] = useState<'realm' | 'groupes' | 'favoris'>('realm');
 	const [isOpen, setIsOpen] = useState(false);
 	const [refresh, setRefresh] = useState(false);
+	const [refreshCharacter, setRefreshCharacter] = useState(false);
 	const [groupSelected, setGroupSelected] = useState({ id: 0, name: '' });
 	const id = searchParams.get('id');
-	const { data } = UseFetch<{ character: Character; characterRealmList: Character[] }>(`${host}/characters?id=${id}`, {
-		method: 'GET',
-		credentials: 'include',
-	});
+	const { data } = UseFetch<{ character: Character; characterRealmList: Character[] }>(
+		`${host}/characters?id=${id}`,
+		{
+			method: 'GET',
+			credentials: 'include',
+		},
+		refreshCharacter
+	);
 
 	const { data: groupList } = UseFetch<Group[]>(
 		`${host}/groups?id=${id}`,
@@ -57,7 +62,7 @@ const CharacterPage = () => {
 
 		return (
 			<div className={styles.container}>
-				<CharacterCard character={character} />
+				<CharacterCard character={character} setRefreshCharacter={setRefreshCharacter} />
 				<div className={styles.dashboard}>
 					<div className={styles.dashboard_menu}>
 						<div className={styles.dashboard_menu__item} onClick={() => setWindow('realm')}>

@@ -9,6 +9,7 @@ import { Spell } from '@/services/types/spell';
 import host from '@/services/host';
 import Modal from '@/components/modal/Modal';
 import EditSpell from '../editSpell/EditSpell';
+import EditLife from '../editLife/EditLife';
 
 const SpellContainer = styled.div<{ $flex: string }>`
 	align-self: flex-end;
@@ -20,7 +21,13 @@ const SpellContainer = styled.div<{ $flex: string }>`
 	}
 `;
 
-const CharacterCard = ({ character }: { character: Character }) => {
+const CharacterCard = ({
+	character,
+	setRefreshCharacter,
+}: {
+	character: Character;
+	setRefreshCharacter: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
 	const [isOpen, setOpen] = useState(false);
 	const [refresh, setRefresh] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -88,7 +95,16 @@ const CharacterCard = ({ character }: { character: Character }) => {
 			</div>
 			{isModalOpen && (
 				<Modal setIsOpen={setIsModalOpen}>
-					{formSelected ? <EditSpell characterId={character.id} spellList={spellsList} setRefresh={setRefresh} /> : <></>}
+					{formSelected ? (
+						<EditSpell characterId={character.id} spellList={spellsList} setRefresh={setRefresh} />
+					) : (
+						<EditLife
+							id={character.id}
+							currentLife={character.current_life}
+							maxLife={character.max_life}
+							setRefresh={setRefreshCharacter}
+						/>
+					)}
 				</Modal>
 			)}
 		</>
