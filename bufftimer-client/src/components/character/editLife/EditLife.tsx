@@ -15,7 +15,7 @@ const EditLife = ({ id, currentLife, maxLife, setRefresh }: Type_EditLife) => {
 
 	const handleChangeRange = (event: ChangeEvent<HTMLInputElement>) => {
 		const value = Number(event.currentTarget.value);
-		const newCurrentLife = (value * maxLife) / 100;
+		const newCurrentLife = Math.round(value * maxLife) / 100;
 		setLife({ ...life, currentLife: newCurrentLife, pourcent: value });
 	};
 

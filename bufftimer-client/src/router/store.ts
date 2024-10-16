@@ -3,7 +3,8 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { thunk } from 'redux-thunk';
-import { dataSlice } from './dataSlice';
+import { authSlice } from './slice/authSlice';
+import { userSlice } from './slice/userSlice';
 
 const persistConfig = {
 	key: 'root',
@@ -11,7 +12,8 @@ const persistConfig = {
 };
 
 const reducers = combineReducers({
-	data: dataSlice.reducer,
+	auth: authSlice.reducer,
+	user: userSlice.reducer,
 });
 
 const store = configureStore({

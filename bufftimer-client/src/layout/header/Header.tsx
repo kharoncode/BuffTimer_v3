@@ -1,27 +1,24 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import styles from './header.module.scss';
 import { useState } from 'react';
 import LoginModal from '../../components/login/login-modal/LoginModal';
 import host from '../../services/host';
-import { useAuth } from '../../utils/useAuth';
-import { User } from '../../services/types/user';
-import UseFetch from '../../utils/useFetch';
 import infoIcone from '@assets/icones/info.svg';
-//import { Character } from '@/services/types/character';
 import CharacterHeader from '@/components/header/characterHeader/CharacterHeader';
+import { useDispatch, useSelector } from 'react-redux';
+import { checkAuth, getUser, getUserCharacters } from '@/router/selectors';
+import { authSlice, checkAuth as cA } from '@/router/slice/authSlice';
+import { AppDispatch, store } from '@/router/store';
+import { userSlice } from '@/router/slice/userSlice';
 
 const Header = () => {
-	const [isOpen, setIsOpen] = useState(false);
+	const dispatch = useDispatch<AppDispatch>();
+	const navigate = useNavigate();
+	const user = useSelector(getUser);
+	const isAuth = useSelector(checkAuth);
+	const characterList = useSelector(getUserCharacters);
 
-	const { isAuth, setLogout, characterList } = useAuth();
-	// const { data: characters } = UseFetch<Character[]>(`${host}/characters`, {
-	// 	method: 'GET',
-	// 	credentials: 'include',
-	// });
-	const { data: user } = UseFetch<User>(`${host}/users`, {
-		method: 'GET',
-		credentials: 'include',
-	});
+	const [isOpen, setIsOpen] = useState(false);
 
 	const logOut = async () => {
 		const resp = await fetch(`${host}/auth/logout`, {
@@ -30,7 +27,10 @@ const Header = () => {
 			headers: { 'Content-Type': 'application/json' },
 		});
 		if (resp.ok) {
-			setLogout();
+			dispatch(cA());
+			store.dispatch(authSlice.actions.resetLogin());
+			store.dispatch(userSlice.actions.resetLogin());
+			navigate('/');
 		}
 	};
 
@@ -42,27 +42,24 @@ const Header = () => {
 				</NavLink>
 				{isAuth ? (
 					<>
-						{characterList &&
-							characterList.map((character) => (
-								<NavLink
-									key={character.id}
-									to={`/auth/character?id=${character.id}&sphere=${character.sphere}`}
-									className={styles.header_authItem}
-								>
-									<CharacterHeader character={character} />
-								</NavLink>
-							))}
-						{user && (
-							<NavLink to="/auth/profile" className={`${styles.header_link} ${styles.welcome}`}>
-								Welcome {user.username}
+						{characterList.map((character) => (
+							<NavLink
+								key={character.id}
+								to={`/auth/character?id=${character.id}&sphere=${character.sphere}`}
+								className={styles.header_authItem}
+							>
+								<CharacterHeader character={character} />
 							</NavLink>
-						)}
+						))}
+
+						<NavLink to="/auth/profile" className={`${styles.header_link} ${styles.welcome}`}>
+							Welcome {user.username}
+						</NavLink>
 					</>
 				) : (
 					<></>
 				)}
 			</nav>
-			{/* {isAuth && <UserComponent />} */}
 			<div className={styles.header_right}>
 				{isAuth && (
 					<NavLink to="/auth/settings" className={styles.header_authItem}>

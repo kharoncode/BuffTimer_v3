@@ -1,6 +1,22 @@
 import { RootState } from './store';
 
 // useSelector
+export function getAuth(state: RootState) {
+	return state?.auth;
+}
+
+export function checkAuth(state: RootState) {
+	return getAuth(state).data.isAuth;
+}
+
+export function getUser(state: RootState) {
+	return state?.user.data.user;
+}
+
+export function getUserCharacters(state: RootState) {
+	return state?.user.data.characters;
+}
+
 // players
 // export function getPlayers(state: RootState) {
 // 	return state?.players;
@@ -41,30 +57,30 @@ import { RootState } from './store';
 // }
 
 // data
-export function getData(state: RootState) {
-	return state?.data.data;
-}
+// export function getData(state: RootState) {
+// 	return state?.data.data;
+// }
 
-export function getDataPages(state: RootState) {
-	return getData(state)?.pages;
-}
+// export function getDataPages(state: RootState) {
+// 	return getData(state)?.pages;
+// }
 
-export function getDataMagie(state: RootState) {
-	return getData(state)?.magie;
-}
+// export function getDataMagie(state: RootState) {
+// 	return getData(state)?.magie;
+// }
 
-export function getDataSpells(state: RootState) {
-	return getDataMagie(state)?.spells;
-}
+// export function getDataSpells(state: RootState) {
+// 	return getDataMagie(state)?.spells;
+// }
 
-export function getDataGods(state: RootState) {
-	return getDataMagie(state)?.gods;
-}
+// export function getDataGods(state: RootState) {
+// 	return getDataMagie(state)?.gods;
+// }
 
-export function getDataSpheres(state: RootState) {
-	return getDataMagie(state)?.spheres;
-}
+// export function getDataSpheres(state: RootState) {
+// 	return getDataMagie(state)?.spheres;
+// }
 
-export function getDataSkills(state: RootState) {
-	return getData(state)?.skills;
-}
+// export function getDataSkills(state: RootState) {
+// 	return getData(state)?.skills;
+// }

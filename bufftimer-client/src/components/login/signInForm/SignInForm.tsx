@@ -2,7 +2,10 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import ErrorMessage from '../../error-message/ErrorMessage';
 import styles from './signInForm.module.scss';
 import host from '../../../services/host';
-import { useAuth } from '../../../utils/useAuth';
+import { userCharacters, userData } from '@/router/slice/userSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/router/store';
+import { checkAuth } from '@/router/slice/authSlice';
 
 const SignInForm = ({ toggle }: { toggle: (bool: boolean) => void }) => {
 	const [focus, setFocus] = useState({ login: false, password: false });
@@ -10,7 +13,7 @@ const SignInForm = ({ toggle }: { toggle: (bool: boolean) => void }) => {
 	const [formValue, setFormValue] = useState({ login: '', password: '' });
 	const [formError, setFormError] = useState({ login: false, password: false });
 
-	const { setLogin } = useAuth();
+	const dispatch = useDispatch<AppDispatch>();
 
 	const handleSet = (
 		input: 'login' | 'password',
@@ -62,7 +65,9 @@ const SignInForm = ({ toggle }: { toggle: (bool: boolean) => void }) => {
 			});
 
 			if (resp.ok) {
-				setLogin();
+				dispatch(checkAuth());
+				dispatch(userData());
+				dispatch(userCharacters());
 				resetForm();
 				toggle(false);
 			}

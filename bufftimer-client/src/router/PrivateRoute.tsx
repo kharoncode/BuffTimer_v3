@@ -1,9 +1,10 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '@/utils/useAuth';
+import { useSelector } from 'react-redux';
+import { checkAuth } from './selectors';
 
 function PrivateRoute() {
-	const { isAuth, loading } = useAuth();
-	if (!loading && !isAuth) {
+	const isAuth = useSelector(checkAuth);
+	if (!isAuth) {
 		return <Navigate to="/" />;
 	} else {
 		return <Outlet />;

@@ -5,8 +5,10 @@ import { useState } from 'react';
 import Modal from '@/components/modal/Modal';
 import EditCharacter from '../editCharacter/EditCharacter';
 import styles from './characterProfileCard.module.scss';
-import { useAuth } from '@/utils/useAuth';
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/router/store';
+import { userCharacters } from '@/router/slice/userSlice';
 
 const CharacterProfileCard = ({
 	character,
@@ -15,9 +17,9 @@ const CharacterProfileCard = ({
 	character: Character;
 	onSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const { name, id, picture, enum_realm } = character;
+	const { name, id, picture, enum_realm, sphere } = character;
 	const [isOpen, setIsOpen] = useState(false);
-	const { getCharacterList } = useAuth();
+	const dispatch = useDispatch<AppDispatch>();
 
 	const handleDelete = async () => {
 		const resp = await fetch(`${host}/characters`, {
@@ -29,7 +31,7 @@ const CharacterProfileCard = ({
 
 		if (resp.ok) {
 			onSuccess((prev) => !prev);
-			getCharacterList();
+			dispatch(userCharacters());
 		}
 	};
 
@@ -37,7 +39,7 @@ const CharacterProfileCard = ({
 		<>
 			<div className={styles.container}>
 				<img className={styles.realm} src={`/pictures/realms/${enum_realm}.png`} alt={er.ToString(enum_realm)} />
-				<NavLink to={`/auth/character?id=${id}`}>
+				<NavLink to={`/auth/character?id=${id}&sphere=${sphere}`}>
 					<img className={styles.picture} src={picture} alt={`Picture of ${name}`} />
 				</NavLink>
 				<p className={styles.name}>{name}</p>

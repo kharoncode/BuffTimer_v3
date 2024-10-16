@@ -2,9 +2,12 @@
 	position: relative;
 	height: 60px;
 	width: 65px;
-	border: 3px solid transparent;
+	border: solid 3px transparent;
 	border-radius: 25%;
 	overflow: hidden;
+	&:hover {
+		border-color: var(--color-hl1);
+	}
 	&:hover .container_life {
 		transition-duration: 300ms;
 		opacity: 1;

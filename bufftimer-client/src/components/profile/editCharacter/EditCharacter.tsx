@@ -6,7 +6,9 @@ import ErrorMessage from '@/components/error-message/ErrorMessage';
 import { enum_realm } from '../../../../../bt_enum/enum_character';
 import { enum_god, enum_sphere, enum_magic_type, enum_god_sphere } from '../../../../../bt_enum/enum_mystique';
 import { Character } from '@/services/types/character';
-import { useAuth } from '@/utils/useAuth';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/router/store';
+import { userCharacters } from '@/router/slice/userSlice';
 
 const EditCharacter = ({
 	character,
@@ -63,7 +65,7 @@ const EditCharacter = ({
 		.split('')
 		.map((el) => (initialSphere[Number(el)] = true));
 
-	const { getCharacterList } = useAuth();
+	const dispatch = useDispatch<AppDispatch>();
 
 	const [formValid, setFormValid] = useState(initialState);
 	const [formValue, setFormValue] = useState(character);
@@ -165,7 +167,7 @@ const EditCharacter = ({
 			if (resp.ok) {
 				setIsOpen(false);
 				onSuccess((prev) => !prev);
-				getCharacterList();
+				dispatch(userCharacters());
 			}
 		}
 	};
