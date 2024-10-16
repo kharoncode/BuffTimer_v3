@@ -111,7 +111,7 @@ const CharacterPage = () => {
 						</div>
 					</div>
 					<div className={styles.dashboard_window}>
-						{windowContent === 'realm' && <CharactersList list={characterRealmList} />}
+						{windowContent === 'realm' && <CharactersList list={characterRealmList} setRefresh={setRefreshCharacter} />}
 						{windowContent === 'groupes' && groupSelected.id !== 0 && <GroupShow group_id={groupSelected.id} name={groupSelected.name} />}
 						{windowContent === 'favoris' && <Favoris id={character.id} />}
 					</div>
