@@ -66,6 +66,35 @@
 	}
 }
 
+.isCurrentSpell {
+	display: flex;
+	gap: 20px;
+	& select {
+		width: 80px;
+		text-align: center;
+		& option {
+			width: 100%;
+			text-align: center;
+		}
+	}
+}
+
+.currentSpellForm {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	&_item {
+		width: 100%;
+		display: flex;
+		& input {
+			width: 80px;
+			margin: 0 150px 0 auto;
+			text-align: center;
+		}
+	}
+}
+
 .submit {
 	width: 100%;
 	cursor: not-allowed;

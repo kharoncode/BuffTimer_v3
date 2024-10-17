@@ -15,7 +15,7 @@ const EditLife = ({ id, currentLife, maxLife, setRefresh }: Type_EditLife) => {
 
 	const handleChangeRange = (event: ChangeEvent<HTMLInputElement>) => {
 		const value = Number(event.currentTarget.value);
-		const newCurrentLife = Math.round(value * maxLife) / 100;
+		const newCurrentLife = Math.round((value * maxLife) / 100);
 		setLife({ ...life, currentLife: newCurrentLife, pourcent: value });
 	};
 
@@ -36,21 +36,23 @@ const EditLife = ({ id, currentLife, maxLife, setRefresh }: Type_EditLife) => {
 		const heal_el = document.getElementById('heal') as HTMLInputElement;
 		if (heal_el) {
 			const value = Number(heal_el.value);
-			let newCurrentLife = life.currentLife + value;
-			if (newCurrentLife > maxLife) {
-				newCurrentLife = maxLife;
-			}
-			setLife({ ...life, currentLife: newCurrentLife });
+			if (value > 0) {
+				let newCurrentLife = life.currentLife + value;
+				if (newCurrentLife > maxLife) {
+					newCurrentLife = maxLife;
+				}
+				setLife({ ...life, currentLife: newCurrentLife });
 
-			const resp = await fetch(`${host}/characters`, {
-				method: 'PATCH',
-				credentials: 'include',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ id: id, update_character: { current_life: newCurrentLife } }),
-			});
+				const resp = await fetch(`${host}/characters`, {
+					method: 'PATCH',
+					credentials: 'include',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ id: id, update_character: { current_life: newCurrentLife } }),
+				});
 
-			if (resp.ok) {
-				setRefresh((prev) => !prev);
+				if (resp.ok) {
+					setRefresh((prev) => !prev);
+				}
 			}
 		}
 	};
@@ -59,8 +61,10 @@ const EditLife = ({ id, currentLife, maxLife, setRefresh }: Type_EditLife) => {
 			<h4>Modifier les PVs</h4>
 			<div className={styles.inputContainer}>
 				<label htmlFor="heal">Faire un soin</label>
-				<input className={styles.inputContainer_heal} min={0} type="number" id="heal" name="heal" />
-				<button onClick={handleSubmitHeal}>Soigner</button>
+				<input className={styles.inputContainer_heal} min={0} defaultValue={0} type="number" id="heal" name="heal" />
+				<button className="btn" onClick={handleSubmitHeal}>
+					Soigner
+				</button>
 			</div>
 			<div className={styles.inputContainer}>
 				<label htmlFor="state">Modifier l'Etat</label>
@@ -90,7 +94,9 @@ const EditLife = ({ id, currentLife, maxLife, setRefresh }: Type_EditLife) => {
 					<option value="90" label="Superficielle"></option>
 					<option value="100" label="Aucune"></option>
 				</datalist>
-				<button onClick={handleSubmitRange}>Valider</button>
+				<button className="btn" onClick={handleSubmitRange}>
+					Valider
+				</button>
 			</div>
 		</div>
 	);

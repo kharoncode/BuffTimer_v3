@@ -94,42 +94,47 @@ const EditSpell = ({ characterId, spellList, setRefresh }: Type_EditSpell) => {
 			<div className={styles.addSpell}>
 				<h4>Ajouter un Sort</h4>
 				<Select options={options} initOption="Selectionner un sort" onChange={setSpell} />
-				<label htmlFor="isCurrentSpell">Sort en court ?</label>
-				<select onChange={(event) => setIsCurrentSpell(Number(event.currentTarget.value))} name="isCurrentSpell" id="isCurrentSpell">
-					<option value={0}>non</option>
-					<option value={1}>oui</option>
-				</select>
+				<div className={styles.isCurrentSpell}>
+					<label htmlFor="isCurrentSpell">Sort en court ?</label>
+					<select onChange={(event) => setIsCurrentSpell(Number(event.currentTarget.value))} name="isCurrentSpell" id="isCurrentSpell">
+						<option value={0}>non</option>
+						<option value={1}>oui</option>
+					</select>
+				</div>
 				{isCurrentSpell === 1 && (
-					<div className={styles.inputLabel}>
+					<div className={styles.currentSpellForm}>
 						Entrez la durée:
-						<div className={styles.inputContainer}>
+						<div className={styles.currentSpellForm_item}>
 							<label htmlFor="day">Jour</label>
 							<input
 								onChange={handleChangeCurrentSpellTime}
 								className={styles.inputText}
-								type="text"
+								type="number"
+								min={0}
 								id="day"
 								name="day"
 								defaultValue={0}
 							/>
 						</div>
-						<div className={styles.inputContainer}>
+						<div className={styles.currentSpellForm_item}>
 							<label htmlFor="hour">Heure</label>
 							<input
 								onChange={handleChangeCurrentSpellTime}
 								className={styles.inputText}
-								type="text"
+								type="number"
+								min={0}
 								id="hour"
 								name="hour"
 								defaultValue={0}
 							/>
 						</div>
-						<div className={styles.inputContainer}>
+						<div className={styles.currentSpellForm_item}>
 							<label htmlFor="minute">Minute</label>
 							<input
 								onChange={handleChangeCurrentSpellTime}
 								className={styles.inputText}
-								type="text"
+								type="number"
+								min={0}
 								id="minute"
 								name="minute"
 								defaultValue={1}

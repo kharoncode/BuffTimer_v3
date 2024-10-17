@@ -22,7 +22,7 @@
 		&__item {
 			width: 100%;
 			display: flex;
-			align-items: center;
+			justify-content: center;
 			border-radius: 15px;
 			padding: 10px 40px;
 			gap: 10px;
@@ -31,11 +31,12 @@
 				color: var(--color-hl1);
 			}
 			& p {
+				text-align: center;
 				font-size: 1.1rem;
 				font-weight: 700;
 			}
 			& img {
-				height: 100px;
+				height: 80px;
 			}
 			&_group {
 				display: flex;
