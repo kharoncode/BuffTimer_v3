@@ -22,7 +22,8 @@ favorisRoute
 				})
 				.from(favoris)
 				.leftJoin(characters, eq(favoris.character_favoris_id, characters.id))
-				.where(eq(favoris.character_id, character_id));
+				.where(eq(favoris.character_id, character_id))
+				.orderBy(characters.name);
 
 			return c.json(resp, 200);
 		} else {

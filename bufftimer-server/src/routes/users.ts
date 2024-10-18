@@ -23,21 +23,6 @@ usersRoute
 
 		return c.json({ error: 'Utilisateur non trouvé' }, 404);
 	})
-	// .post('/', async (c) => {
-	// 	try {
-	// 		const db = drizzle(c.env.DB);
-	// 		const user = await c.req.json();
-	// 		user.password = bcrypt.hashSync(user.password, 10);
-	// 		const resp = await db.insert(users).values(user).returning();
-	// 		return c.json(resp, 200);
-	// 	} catch (error) {
-	// 		console.error("Erreur lors de la création de l'utilisateur:", error);
-	// 		if (error instanceof Error && error.message.includes('UNIQUE constraint failed: users.mail')) {
-	// 			return c.json({ error: 'Cet email est déjà utilisé.' }, 400);
-	// 		}
-	// 		return c.json({ error: "Une erreur s'est produite lors de la création de l'utilisateur." }, 500);
-	// 	}
-	// })
 	.patch('/', async (c) => {
 		try {
 			const isUser = c.get('user');
@@ -47,7 +32,6 @@ usersRoute
 			const db = drizzle(c.env.DB);
 			const user = await db.select().from(users).where(eq(users.id, isUser.id));
 			const { password, updated_user } = await c.req.json();
-			console.log(password);
 			const validPassword = bcrypt.compareSync(password, user[0].password);
 			if (!validPassword) {
 				return c.json({ error: 'Invalid password.' }, 400);
@@ -57,6 +41,29 @@ usersRoute
 			}
 
 			const resp = await db.update(users).set(updated_user).where(eq(users.id, isUser.id)).returning();
+
+			if (resp.length > 0) {
+				return c.json(resp[0], 200);
+			} else {
+				return c.json({ error: 'Aucune modification effectuée.' }, 400);
+			}
+		} catch (error) {
+			console.error("Erreur lors de la mise à jour de l'utilisateur:", error);
+			return c.json({ error: "Une erreur s'est produite lors de la mise à jour de l'utilisateur." }, 500);
+		}
+	})
+	.patch('/forgetPassword', async (c) => {
+		try {
+			const isUser = c.get('user');
+			if (!isUser) {
+				return c.json({ msg: 'Veuillez vous connecter !' });
+			}
+			const db = drizzle(c.env.DB);
+			const { password, user_id } = await c.req.json();
+
+			const updated_password = bcrypt.hashSync(password, 10);
+
+			const resp = await db.update(users).set({ password: updated_password }).where(eq(users.id, user_id)).returning();
 
 			if (resp.length > 0) {
 				return c.json(resp[0], 200);

@@ -20,7 +20,11 @@ characterSpellsRoute
 			await db
 				.delete(character_spells)
 				.where(and(eq(character_spells.character_id, character_id), lt(character_spells.expires_at, currentTime)));
-			const resp = await db.select().from(character_spells).where(eq(character_spells.character_id, character_id));
+			const resp = await db
+				.select()
+				.from(character_spells)
+				.where(eq(character_spells.character_id, character_id))
+				.orderBy(character_spells.expires_at);
 
 			return c.json(resp);
 		} else {

@@ -26,7 +26,8 @@ charactersRoute
 				const realm_characters = await db
 					.select()
 					.from(characters)
-					.where(and(eq(characters.enum_realm, resp[0].enum_realm), ne(characters.id, resp[0].id)));
+					.where(and(eq(characters.enum_realm, resp[0].enum_realm), ne(characters.id, resp[0].id)))
+					.orderBy(characters.name);
 
 				return c.json({ character: resp[0], characterRealmList: realm_characters });
 			}
@@ -50,7 +51,7 @@ charactersRoute
 		}
 		const db = drizzle(c.env.DB);
 
-		const resp = await db.select().from(characters);
+		const resp = await db.select().from(characters).orderBy(characters.name);
 		return c.json(resp);
 	})
 	.post('/', async (c) => {

@@ -23,7 +23,8 @@ groupsRoute
 				})
 				.from(groups)
 				.leftJoin(group_characters, eq(group_characters.group_id, groups.id))
-				.where(eq(group_characters.character_id, character_id));
+				.where(eq(group_characters.character_id, character_id))
+				.orderBy(groups.name);
 
 			return c.json(resp, 200);
 		} else {
@@ -40,24 +41,13 @@ groupsRoute
 		if (group_id) {
 			const charactersGroupListRow = await db
 				.select({
-					// id: characters.id,
-					// user_id: characters.user_id,
-					// name: characters.name,
-					// picture: characters.picture,
-					// enum_realm: characters.enum_realm,
-					// intelligence: characters.intelligence,
-					// current_life: characters.current_life,
-					// max_life: characters.max_life,
-					// message: characters.message,
-					// enum_god: characters.enum_god,
-					// enum_magic_type: characters.enum_magic_type,
-					// sphere: characters.sphere,
 					character: characters,
 					group_characters_id: group_characters.id,
 				})
 				.from(group_characters)
 				.leftJoin(characters, eq(group_characters.character_id, characters.id))
-				.where(eq(group_characters.group_id, group_id));
+				.where(eq(group_characters.group_id, group_id))
+				.orderBy(characters.name);
 
 			const charactersEnemiesGroupListRow = await db
 				.select({

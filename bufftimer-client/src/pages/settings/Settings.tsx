@@ -3,12 +3,10 @@ import { User } from '@/services/types/user';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import styles from './settings.module.scss';
 import ErrorMessage from '@/components/error-message/ErrorMessage';
+import Modal from '@/components/modal/Modal';
 
 const Settings = () => {
-	// const { data: user } = UseFetch<User>(`${host}/users`, {
-	// 	method: 'GET',
-	// 	credentials: 'include',
-	// });
+	const [open, setOpen] = useState(false);
 
 	const initUser = {
 		id: 0,
@@ -130,9 +128,17 @@ const Settings = () => {
 			});
 
 			if (resp.ok) {
+				modalTimeOut();
 				setFormPasswordValue({ oldPassword: '', newPassword: '', newPassword2: '' });
 			}
 		}
+	};
+
+	const modalTimeOut = () => {
+		setOpen(true);
+		setTimeout(() => {
+			setOpen(false);
+		}, 1000);
 	};
 	return (
 		<div className={styles.container}>
@@ -187,6 +193,11 @@ const Settings = () => {
 					Editer
 				</button>
 			</form>
+			{open && (
+				<Modal setIsOpen={setOpen}>
+					<div>Mot de passe modifié !</div>
+				</Modal>
+			)}
 		</div>
 	);
 };

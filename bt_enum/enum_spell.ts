@@ -31,7 +31,6 @@ export const enum_spell = {
 	malediction: 28,
 	oeil_pour_oeil: 29,
 	salut_du_divin: 30,
-	lame_de_justice: 31,
 	ToString: (value: number): string | undefined => {
 		const str = [
 			undefined,
@@ -65,8 +64,6 @@ export const enum_spell = {
 			'Malediction',
 			'Oeil pour oeil',
 			'Salut du Divin',
-			'Lame de Justice',
-			'Attaque Sacrée',
 		];
 		return str[value];
 	},
@@ -221,11 +218,6 @@ export const enum_spell_data = {
 	[enum_spell.salut_du_divin]: {
 		sphere: enum_sphere.protection,
 		arcane: 2,
-		time: 7800000,
-	},
-	[enum_spell.lame_de_justice]: {
-		sphere: enum_sphere.justice,
-		arcane: 4,
 		time: 7800000,
 	},
 };
