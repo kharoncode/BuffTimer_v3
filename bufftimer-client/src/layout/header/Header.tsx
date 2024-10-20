@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import styles from './header.module.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoginModal from '../../components/login/login-modal/LoginModal';
 import host from '../../services/host';
 import infoIcone from '@assets/icones/info.svg';
@@ -33,6 +33,11 @@ const Header = () => {
 			navigate('/');
 		}
 	};
+
+	useEffect(() => {
+		console.log('Init Header');
+		dispatch(cA());
+	}, []);
 
 	return (
 		<header>
