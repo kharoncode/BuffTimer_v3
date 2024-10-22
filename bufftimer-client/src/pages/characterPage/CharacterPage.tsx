@@ -32,7 +32,7 @@ const CharacterPage = () => {
 		refreshCharacter
 	);
 
-	const { data: groupList } = UseFetch<Group[]>(
+	const { data: groups } = UseFetch<{ characterGroups: Group[]; otherGroups: Group[] }>(
 		`${host}/groups?id=${id}`,
 		{
 			method: 'GET',
@@ -41,13 +41,14 @@ const CharacterPage = () => {
 		refresh
 	);
 
-	const groupRefresh = () => {
+	const groupRefresh = (isInit: boolean) => {
 		setRefresh((prev) => !prev);
-		setGroupSelected(initialGroup);
+		isInit && setGroupSelected(initialGroup);
 	};
 
 	useEffect(() => {
 		setWindow('realm');
+		setGroupSelected({ group_id: 0, creator_id: 0, group_name: '' });
 	}, [id]);
 
 	if (data) {
@@ -59,22 +60,32 @@ const CharacterPage = () => {
 				<div className={styles.dashboard}>
 					<div className={styles.dashboard_menu}>
 						<div className={styles.dashboard_menu__item} onClick={() => setWindow('realm')}>
-							<img src={`/pictures/realms/${character.enum_realm}.png`} alt={er.ToString(character.enum_realm)} />
+							<img
+								className={styles.dashboard_menu__item__title}
+								src={`/pictures/realms/${character.enum_realm}.png`}
+								alt={er.ToString(character.enum_realm)}
+							/>
 						</div>
-						<div className={styles.dashboard_menu__item + ' ' + styles.dashboard_menu__item_group}>
-							<p onClick={() => setIsGroupListOpen((prev) => !prev)} className={windowContent === 'groupes' ? styles.active : ''}>
+						<div className={styles.dashboard_menu__item_group + ' ' + styles.dashboard_menu__item}>
+							<p
+								onClick={() => setIsGroupListOpen((prev) => !prev)}
+								className={windowContent === 'groupes' ? styles.active : '' + ' ' + styles.dashboard_menu__item__title}
+							>
 								Groupes
 							</p>
 							{isGroupListOpen && (
 								<div className={styles.dashboard_menu__item_group_nav}>
-									<button className="btn" onClick={() => setIsOpen(true)}>
-										Ajouter
-									</button>
-									<div className={styles.dashboard_menu__item_group_list}>
-										{groupList && groupList.length !== 0 ? (
-											groupList.map((group) => (
-												<div className={styles.groupCard} key={group.group_id}>
+									<div className={styles.dashboard_menu__item_group_container}>
+										<h3>Vos Groupes :</h3>
+										<button className={styles.dashboard_menu__item_group_btn} onClick={() => setIsOpen(true)}>
+											Ajouter
+										</button>
+										<div className={styles.dashboard_menu__item_group_list}>
+											{groups && groups.characterGroups.length !== 0 ? (
+												groups.characterGroups.map((group) => (
 													<div
+														className={`${styles.groupCard} ${groupSelected.group_id === group.group_id && styles.groupCard_active}`}
+														key={group.group_id}
 														onClick={() => {
 															setGroupSelected(group);
 															setWindow('groupes');
@@ -82,17 +93,38 @@ const CharacterPage = () => {
 													>
 														{group.group_name}
 													</div>
-												</div>
-											))
-										) : (
-											<div className={styles.no_group}>Pas de Groupe</div>
-										)}
+												))
+											) : (
+												<div className={styles.no_group}>Pas de Groupe</div>
+											)}
+										</div>
+									</div>
+									<div className={styles.dashboard_menu__item_group_container}>
+										<h3>Les autres groupes :</h3>
+										<div className={styles.dashboard_menu__item_group_list}>
+											{groups && groups.otherGroups.length !== 0 ? (
+												groups.otherGroups.map((group) => (
+													<div
+														className={`${styles.groupCard} ${groupSelected.group_id === group.group_id && styles.groupCard_active}`}
+														key={group.group_id}
+														onClick={() => {
+															setGroupSelected(group);
+															setWindow('groupes');
+														}}
+													>
+														{group.group_name}
+													</div>
+												))
+											) : (
+												<div className={styles.no_group}>Pas de Groupe</div>
+											)}
+										</div>
 									</div>
 								</div>
 							)}
 						</div>
 						<div className={styles.dashboard_menu__item} onClick={() => setWindow('favoris')}>
-							<p className={windowContent === 'favoris' ? styles.active : ''}>Favoris</p>
+							<p className={windowContent === 'favoris' ? styles.active : '' + ' ' + styles.dashboard_menu__item__title}>Favoris</p>
 						</div>
 					</div>
 					<div className={styles.dashboard_window}>

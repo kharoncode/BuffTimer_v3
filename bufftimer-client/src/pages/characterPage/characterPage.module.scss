@@ -17,7 +17,7 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 20px;
-		width: 200px;
+		width: 300px;
 		border-right: solid 2px black;
 		&__item {
 			width: 100%;
@@ -26,10 +26,14 @@
 			border-radius: 15px;
 			padding: 10px 40px;
 			gap: 10px;
-			cursor: pointer;
-			&:hover p {
-				color: var(--color-hl1);
+			&__title {
+				cursor: pointer;
+				font-size: 1.3rem;
+				&:hover {
+					color: var(--color-hl1);
+				}
 			}
+
 			& p {
 				text-align: center;
 				font-size: 1.1rem;
@@ -42,17 +46,44 @@
 				display: flex;
 				flex-direction: column;
 				align-items: center;
+				&_btn {
+					text-align: center;
+					cursor: pointer;
+					font-weight: 600;
+					padding: 10px;
+					border-radius: 10px;
+					border-style: none;
+					color: white;
+					background: var(--color-hl1);
+					&:hover {
+						background-color: var(--color-hl3);
+					}
+				}
 				&_nav {
 					display: flex;
 					flex-direction: column;
 					align-items: center;
+					gap: 30px;
+					margin-left: 20px;
+					padding-left: 10px;
+					border-left: solid 2px black;
+				}
+				&_container {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
 					gap: 20px;
+					& h3 {
+						font-size: 1.1rem;
+						text-align: center;
+					}
 				}
 				&_list {
 					width: 100%;
 					display: flex;
-					flex-wrap: wrap;
-					gap: 10px;
+					flex-direction: column;
+					align-items: center;
+					gap: 20px;
 				}
 			}
 		}
@@ -75,17 +106,24 @@
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
-	& p {
+	font-weight: 500;
+	cursor: pointer;
+	border: solid 2px var(--color-hl1);
+	border-radius: 25px;
+	padding: 3px;
+	&:hover {
+		color: var(--color-hl1);
 		font-weight: 700;
-		cursor: pointer;
-		&:hover {
-			color: var(--color-hl1);
-		}
+	}
+	&_active {
+		color: var(--color-hl1);
+		font-weight: 700;
 	}
 }
 
 .active {
 	color: var(--color-hl1);
+	cursor: pointer;
 }
 
 .option {

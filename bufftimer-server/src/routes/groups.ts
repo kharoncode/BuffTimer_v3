@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { drizzle } from 'drizzle-orm/d1';
 import { characters, group_characters, group_enemies, groups, monsters } from '../db/schema';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, notInArray } from 'drizzle-orm';
 import { Bindings, Variables } from '../lib/bindings';
 
 const groupsRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>();
@@ -15,18 +15,29 @@ groupsRoute
 		const db = drizzle(c.env.DB);
 		const character_id = Number(c.req.query('id'));
 		if (character_id) {
-			const resp = await db
+			const characterGroup = await db
 				.select({
 					group_id: groups.id,
 					group_name: groups.name,
 					creator_id: groups.creator_id,
 				})
 				.from(groups)
-				.leftJoin(group_characters, eq(group_characters.group_id, groups.id))
+				.innerJoin(group_characters, eq(group_characters.group_id, groups.id))
 				.where(eq(group_characters.character_id, character_id))
 				.orderBy(groups.name);
 
-			return c.json(resp, 200);
+			const presentGroupIds = characterGroup.map((group) => group.group_id);
+			const otherGroups = await db
+				.select({
+					group_id: groups.id,
+					group_name: groups.name,
+					creator_id: groups.creator_id,
+				})
+				.from(groups)
+				.where(notInArray(groups.id, presentGroupIds))
+				.orderBy(groups.name);
+
+			return c.json({ characterGroups: characterGroup, otherGroups: otherGroups }, 200);
 		} else {
 			return c.json({ error: 'Un id est requis !' });
 		}
