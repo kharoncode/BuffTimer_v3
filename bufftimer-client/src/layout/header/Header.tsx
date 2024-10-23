@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { checkAuth, getUser, getUserCharacters } from '@/router/selectors';
 import { authSlice, checkAuth as cA } from '@/router/slice/authSlice';
 import { AppDispatch, store } from '@/router/store';
-import { userSlice } from '@/router/slice/userSlice';
+import { userCharacters, userSlice } from '@/router/slice/userSlice';
 
 const Header = () => {
 	const dispatch = useDispatch<AppDispatch>();
@@ -37,6 +37,7 @@ const Header = () => {
 	useEffect(() => {
 		console.log('Init Header');
 		dispatch(cA());
+		dispatch(userCharacters());
 	}, []);
 
 	return (

@@ -2,7 +2,7 @@ import { Character } from '@/services/types/character';
 import styles from './characterCard.module.scss';
 import styled from 'styled-components';
 import LifeBar from '../lifeBar/lifeBar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SpellCard from '../spellCard/SpellCard';
 import UseFetch from '@/utils/useFetch';
 import { Spell } from '@/services/types/spell';
@@ -10,11 +10,14 @@ import host from '@/services/host';
 import Modal from '@/components/modal/Modal';
 import EditSpell from '../editSpell/EditSpell';
 import EditLife from '../editLife/EditLife';
+import { useSelector } from 'react-redux';
+import { isSpellView } from '@/router/selectors';
 
 const SpellContainer = styled.div<{ $flex: string }>`
 	align-self: flex-end;
 	width: 85%;
 	display: flex;
+	min-height: 30px;
 	${({ $flex }) => $flex}
 	@media (max-width: 700px) {
 		width: 100%;
@@ -28,10 +31,15 @@ const CharacterCard = ({
 	character: Character;
 	setRefreshCharacter: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+	const isSpellOpen = useSelector(isSpellView);
 	const [isOpen, setOpen] = useState(false);
 	const [refresh, setRefresh] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [formSelected, setFormSelected] = useState(true);
+
+	useEffect(() => {
+		setOpen(isSpellOpen);
+	}, [isSpellOpen]);
 
 	const handleModal = (select: boolean) => {
 		setIsModalOpen(true);
@@ -74,7 +82,7 @@ const CharacterCard = ({
 				{spellsList && (
 					<SpellContainer
 						onClick={() => {
-							setOpen(!isOpen);
+							setOpen((prev) => !prev);
 						}}
 						$flex={style}
 					>

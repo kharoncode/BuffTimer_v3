@@ -4,8 +4,13 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import styles from './settings.module.scss';
 import ErrorMessage from '@/components/error-message/ErrorMessage';
 import Modal from '@/components/modal/Modal';
+import { store } from '@/router/store';
+import { userSlice } from '@/router/slice/userSlice';
+import { useSelector } from 'react-redux';
+import { isSpellView } from '@/router/selectors';
 
 const Settings = () => {
+	const isSpellOpen = useSelector(isSpellView);
 	const [open, setOpen] = useState(false);
 
 	const initUser = {
@@ -38,7 +43,7 @@ const Settings = () => {
 	const initialState = {
 		username: true,
 		mail: true,
-		password: true,
+		password: false,
 	};
 	const initialErrorState = {
 		username: false,
@@ -134,6 +139,11 @@ const Settings = () => {
 		}
 	};
 
+	const handleSpellView = (event: ChangeEvent<HTMLInputElement>) => {
+		const value = event.currentTarget.checked;
+		store.dispatch(userSlice.actions.changeIsSpellView(value));
+	};
+
 	const modalTimeOut = () => {
 		setOpen(true);
 		setTimeout(() => {
@@ -142,7 +152,15 @@ const Settings = () => {
 	};
 	return (
 		<div className={styles.container}>
+			<div className={styles.form}>
+				<h3>Editer les Paramètres</h3>
+				<div className={styles.input_checkbox__container}>
+					<label htmlFor="spellView">Toujours afficher le détail des sorts :</label>
+					<input onChange={(event) => handleSpellView(event)} type="checkbox" id="spellView" name="spellView" checked={isSpellOpen} />
+				</div>
+			</div>
 			<form className={styles.form} onSubmit={handleSubmit}>
+				<h3>Editer le profil utilisateur</h3>
 				<div className={styles.input_text__container}>
 					<label htmlFor="username">Nom de l'utilisateur</label>
 					<input
@@ -172,6 +190,7 @@ const Settings = () => {
 				</button>
 			</form>
 			<form className={styles.form} onSubmit={handlePasswordSubmit}>
+				<h3>Changer le mot de passe</h3>
 				<div className={styles.input_text__container}>
 					<label htmlFor="oldPassword">Ancien Mot de Passe</label>
 					<input type="password" id="oldPassword" name="oldPassword" required autoComplete="current-password" onChange={handleChange} />

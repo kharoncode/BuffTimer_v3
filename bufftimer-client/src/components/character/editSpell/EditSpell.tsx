@@ -34,6 +34,16 @@ const EditSpell = ({ characterId, spellList, setRefresh }: Type_EditSpell) => {
 			return { value: value, label: label, styles: style };
 		});
 
+	const optionsAll = Object.keys(enum_spell)
+		.filter((key) => typeof enum_spell[key as keyof typeof enum_spell] === 'number')
+		.sort((a, b) => (a > b ? 1 : -1))
+		.map((key) => {
+			const value = Number(enum_spell[key as keyof typeof enum_spell]);
+			const label = enum_spell.ToString(value as number);
+			const style = styles[`addSpell_option__${esd[Number(value)].sphere}`];
+			return { value: value, label: label, styles: style };
+		});
+
 	const handleChangeCurrentSpellTime = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
 		setCurrentSpellTime({ ...currentSpellTime, [name]: Number(value) });
@@ -93,7 +103,7 @@ const EditSpell = ({ characterId, spellList, setRefresh }: Type_EditSpell) => {
 			)}
 			<div className={styles.addSpell}>
 				<h4>Ajouter un Sort</h4>
-				<Select options={options} initOption="Selectionner un sort" onChange={setSpell} />
+				<Select options={isCurrentSpell ? optionsAll : options} initOption="Selectionner un sort" onChange={setSpell} />
 				<div className={styles.isCurrentSpell}>
 					<label htmlFor="isCurrentSpell">Sort en court ?</label>
 					<select onChange={(event) => setIsCurrentSpell(Number(event.currentTarget.value))} name="isCurrentSpell" id="isCurrentSpell">

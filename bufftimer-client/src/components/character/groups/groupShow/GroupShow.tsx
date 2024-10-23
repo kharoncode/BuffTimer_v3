@@ -131,39 +131,39 @@ const GroupShow = ({
 				</div>
 
 				<div className={styles.arene}>
+					{charactersList && (
+						<div className={styles.select}>
+							<select
+								onChange={(event) => {
+									const { value } = event.target;
+									setCharacterSelected(Number(value));
+								}}
+							>
+								<option value="0">Ajouter un Personnage</option>
+								{charactersList
+									.filter(
+										(character) =>
+											!data.characters.some((dataCharacter) => {
+												return dataCharacter.character.id === character.id;
+											})
+									)
+									.map((character) => (
+										<option key={`${character.id}_option`} value={character.id}>
+											{character.name}
+										</option>
+									))}
+							</select>
+							<button
+								className="btn"
+								onClick={() => {
+									addGoodCharacter(characterSelected);
+								}}
+							>
+								Ajouter
+							</button>
+						</div>
+					)}
 					<div className={styles.arene_team}>
-						{charactersList && (
-							<div className={styles.select}>
-								<select
-									onChange={(event) => {
-										const { value } = event.target;
-										setCharacterSelected(Number(value));
-									}}
-								>
-									<option value="0">Ajouter un Personnage</option>
-									{charactersList
-										.filter(
-											(character) =>
-												!data.characters.some((dataCharacter) => {
-													return dataCharacter.character.id === character.id;
-												})
-										)
-										.map((character) => (
-											<option key={`${character.id}_option`} value={character.id}>
-												{character.name}
-											</option>
-										))}
-								</select>
-								<button
-									className="btn"
-									onClick={() => {
-										addGoodCharacter(characterSelected);
-									}}
-								>
-									Ajouter
-								</button>
-							</div>
-						)}
 						{data.characters
 							.filter((character) => character.character.id !== casterId)
 							.map((character) => (

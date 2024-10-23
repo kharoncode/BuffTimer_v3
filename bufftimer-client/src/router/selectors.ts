@@ -17,6 +17,11 @@ export function getUserCharacters(state: RootState) {
 	return state?.user.data.characters;
 }
 
+// profilSelector
+export const isSpellView = (state: RootState) => {
+	return state.user.data.profil.isSpellView;
+};
+
 // players
 // export function getPlayers(state: RootState) {
 // 	return state?.players;

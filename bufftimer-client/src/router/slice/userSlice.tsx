@@ -35,13 +35,13 @@ export const userCharacters = createAsyncThunk('user/characters', async () => {
 
 type DataState = {
 	loading: boolean;
-	data: { user: User; characters: Character[] };
+	data: { user: User; characters: Character[]; profil: { isSpellView: boolean } };
 	error: boolean | null | string | undefined;
 };
 
 const initialState: DataState = {
 	loading: false,
-	data: { user: { id: 0, username: '', mail: '', date: '', admin: false }, characters: [] },
+	data: { user: { id: 0, username: '', mail: '', date: '', admin: false }, characters: [], profil: { isSpellView: false } },
 	error: null,
 };
 
@@ -51,6 +51,10 @@ export const userSlice = createSlice({
 	reducers: {
 		resetLogin: () => {
 			return initialState;
+		},
+		changeIsSpellView: (state, action) => {
+			const newState = { ...state, data: { ...state.data, profil: { isSpellView: action.payload } } };
+			return newState;
 		},
 	},
 	extraReducers: (builder) => {
