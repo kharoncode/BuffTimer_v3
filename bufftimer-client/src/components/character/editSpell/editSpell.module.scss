@@ -79,6 +79,12 @@
 	}
 }
 
+.critical {
+	display: flex;
+	gap: 15px;
+	align-items: center;
+}
+
 .currentSpellForm {
 	width: 100%;
 	display: flex;

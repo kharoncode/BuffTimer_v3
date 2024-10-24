@@ -22,6 +22,7 @@ const EditSpell = ({ characterId, spellList, setRefresh }: Type_EditSpell) => {
 	const [spell, setSpell] = useState(0);
 	const [isCurrentSpell, setIsCurrentSpell] = useState(0);
 	const [currentSpellTime, setCurrentSpellTime] = useState({ day: 0, hour: 0, minute: 1 });
+	const [isCritical, setIsCritical] = useState(false);
 
 	const options = Object.keys(enum_spell)
 		.filter((key) => typeof enum_spell[key as keyof typeof enum_spell] === 'number')
@@ -54,6 +55,7 @@ const EditSpell = ({ characterId, spellList, setRefresh }: Type_EditSpell) => {
 			const data = {
 				spell: { character_id: characterId, enum_spell: spell, expires_at: 0 },
 				caster_id: casterId,
+				isCritical: isCritical ? 2 : 1,
 			};
 			if (isCurrentSpell) {
 				data.spell.expires_at =
@@ -111,6 +113,12 @@ const EditSpell = ({ characterId, spellList, setRefresh }: Type_EditSpell) => {
 						<option value={1}>oui</option>
 					</select>
 				</div>
+				{isCurrentSpell === 0 && (
+					<div className={styles.critical}>
+						<label htmlFor="critical">Réussite Critique</label>
+						<input onChange={(event) => setIsCritical(event.currentTarget.checked)} type="checkbox" id="critical" name="critical" />
+					</div>
+				)}
 				{isCurrentSpell === 1 && (
 					<div className={styles.currentSpellForm}>
 						Entrez la durée:

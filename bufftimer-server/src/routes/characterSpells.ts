@@ -38,10 +38,10 @@ characterSpellsRoute
 				return c.json({ error: 'Veuillez vous connecter !' }, 404);
 			}
 			const db = drizzle(c.env.DB);
-			const { caster_id, spell } = await c.req.json();
+			const { caster_id, spell, isCritical } = await c.req.json();
 			if (spell.expires_at === 0) {
 				const caster = await db.select({ intelligence: characters.intelligence }).from(characters).where(eq(characters.id, caster_id));
-				spell.expires_at = esd[spell.enum_spell].time * caster[0].intelligence + Date.now();
+				spell.expires_at = esd[spell.enum_spell].time * caster[0].intelligence * isCritical + Date.now();
 			}
 			const isSpell = await db
 				.select()
