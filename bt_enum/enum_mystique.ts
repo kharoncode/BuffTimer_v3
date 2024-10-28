@@ -70,7 +70,7 @@ export const enum_god_sphere = {
 	[enum_god.azolth]: [enum_sphere.protection, enum_sphere.negation, enum_sphere.alteration],
 	[enum_god.dallia]: [enum_sphere.protection, enum_sphere.vitalite, enum_sphere.alteration],
 	[enum_god.delemia]: [enum_sphere.protection, enum_sphere.negation, enum_sphere.alteration],
-	[enum_god.karkh]: [enum_sphere.protection, enum_sphere.vitalite, enum_sphere.destruction],
+	[enum_god.karkh]: [enum_sphere.protection, enum_sphere.vitalite, enum_sphere.negation],
 	[enum_god.keldar]: [enum_sphere.protection, enum_sphere.negation, enum_sphere.justice],
 	[enum_god.ghornag]: [enum_sphere.protection, enum_sphere.vitalite, enum_sphere.destruction],
 	[enum_god.khelnor]: [enum_sphere.protection, enum_sphere.negation, enum_sphere.alteration],

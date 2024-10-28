@@ -1,5 +1,15 @@
 import { enum_sphere } from './enum_mystique';
 
+export const enum_spell_type = {
+	profane: 1,
+	divin: 2,
+	commun: 3,
+	ToString: (value: number): string | undefined => {
+		const str = [undefined, 'Profane', 'Divin', 'Commun'];
+		return str[value];
+	},
+};
+
 export const enum_spell = {
 	flou: 1,
 	benediction_de_keldar: 2,
@@ -31,6 +41,15 @@ export const enum_spell = {
 	malediction: 28,
 	oeil_pour_oeil: 29,
 	salut_du_divin: 30,
+	bombe_de_lumiere: 31,
+	cecite: 32,
+	champ_antimagie: 33,
+	image_miroir: 34,
+	silence: 35,
+	distorsion_temporelle: 36,
+	vision_ultime: 37,
+	absorption: 38,
+	cicatrisation: 39,
 	ToString: (value: number): string | undefined => {
 		const str = [
 			undefined,
@@ -64,6 +83,15 @@ export const enum_spell = {
 			'Malediction',
 			'Oeil pour oeil',
 			'Salut du Divin',
+			'Bombe de Lumière',
+			'Cécité',
+			"Champ d'antimagie",
+			'Image miroir',
+			'Silence',
+			'Distortion temporelle',
+			'Vision ultime',
+			'Absorption',
+			'Cicatrisation',
 		];
 		return str[value];
 	},
@@ -73,151 +101,235 @@ export const enum_spell_data = {
 	[enum_spell.flou]: {
 		sphere: enum_sphere.alteration,
 		arcane: 1,
-		time: 0,
+		time: 1800000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.benediction_de_keldar]: {
 		sphere: enum_sphere.justice,
 		arcane: 1,
 		time: 7800000,
+		type: enum_spell_type.divin,
 	},
 	[enum_spell.attaque_sacree]: {
 		sphere: enum_sphere.justice,
 		arcane: 2,
 		time: 1800000,
+		type: enum_spell_type.divin,
 	},
 	[enum_spell.regeneration_mineure]: {
 		sphere: enum_sphere.protection,
 		arcane: 1,
 		time: 7800000,
+		type: enum_spell_type.divin,
 	},
 	[enum_spell.ami_de_la_foret]: {
 		sphere: enum_sphere.vitalite,
 		arcane: 1,
 		time: 7800000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.vigueur]: {
 		sphere: enum_sphere.vitalite,
 		arcane: 1,
 		time: 7800000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.invisibilite]: {
 		sphere: enum_sphere.alteration,
 		arcane: 2,
-		time: 0,
+		time: 1800000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.corrosion]: {
 		sphere: enum_sphere.destruction,
 		arcane: 2,
 		time: 4680000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.toucher_acide]: {
 		sphere: enum_sphere.destruction,
 		arcane: 2,
 		time: 5200000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.resistance]: {
 		sphere: enum_sphere.protection,
 		arcane: 2,
 		time: 4680000,
+		type: enum_spell_type.divin,
 	},
 	[enum_spell.restauration]: {
 		sphere: enum_sphere.vitalite,
 		arcane: 2,
 		time: 5200000,
+		type: enum_spell_type.profane,
 	},
 	[enum_spell.vitesse]: {
 		sphere: enum_sphere.vitalite,
 		arcane: 2,
 		time: 6240000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.brulure_de_mana]: {
 		sphere: enum_sphere.destruction,
 		arcane: 3,
 		time: 4680000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.grande_benediction_de_keldar]: {
 		sphere: enum_sphere.justice,
 		arcane: 3,
 		time: 7800000,
+		type: enum_spell_type.divin,
 	},
 	[enum_spell.regeneration]: {
 		sphere: enum_sphere.protection,
 		arcane: 3,
 		time: 3900000,
+		type: enum_spell_type.divin,
 	},
 	[enum_spell.convulsions]: {
 		sphere: enum_sphere.vitalite,
 		arcane: 3,
 		time: 4680000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.peau_de_pierre]: {
 		sphere: enum_sphere.vitalite,
 		arcane: 3,
 		time: 4680000,
+		type: enum_spell_type.profane,
 	},
 	[enum_spell.verdoyance]: {
 		sphere: enum_sphere.vitalite,
 		arcane: 3,
 		time: 7800000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.nappe_de_Brume]: {
 		sphere: enum_sphere.destruction,
 		arcane: 4,
 		time: 1950000,
+		type: enum_spell_type.profane,
 	},
 	[enum_spell.lame_de_la_justice]: {
 		sphere: enum_sphere.justice,
 		arcane: 4,
 		time: 7800000,
+		type: enum_spell_type.divin,
 	},
 	[enum_spell.caprice_du_destin]: {
 		sphere: enum_sphere.protection,
 		arcane: 4,
 		time: 1950000,
+		type: enum_spell_type.divin,
 	},
 	[enum_spell.agilite]: {
 		sphere: enum_sphere.vitalite,
 		arcane: 4,
 		time: 5200000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.transcendance]: {
 		sphere: enum_sphere.justice,
 		arcane: 5,
 		time: 2880000,
+		type: enum_spell_type.divin,
 	},
 	[enum_spell.decomposition]: {
 		sphere: enum_sphere.negation,
 		arcane: 5,
 		time: 1800000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.chatiment]: {
 		sphere: enum_sphere.protection,
 		arcane: 5,
 		time: 4680000,
+		type: enum_spell_type.divin,
 	},
 	[enum_spell.plenitude]: {
 		sphere: enum_sphere.vitalite,
 		arcane: 5,
 		time: 5200000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.entraves]: {
 		sphere: enum_sphere.negation,
 		arcane: 4,
 		time: 3600000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.malediction]: {
 		sphere: enum_sphere.negation,
 		arcane: 3,
 		time: 3600000,
+		type: enum_spell_type.commun,
 	},
 	[enum_spell.oeil_pour_oeil]: {
 		sphere: enum_sphere.negation,
 		arcane: 2,
 		time: 1800000,
+		type: enum_spell_type.profane,
 	},
 	[enum_spell.salut_du_divin]: {
 		sphere: enum_sphere.protection,
 		arcane: 2,
 		time: 7800000,
+		type: enum_spell_type.divin,
+	},
+	[enum_spell.bombe_de_lumiere]: {
+		sphere: enum_sphere.alteration,
+		arcane: 3,
+		time: 1800000,
+		type: enum_spell_type.profane,
+	},
+	[enum_spell.cecite]: {
+		sphere: enum_sphere.alteration,
+		arcane: 3,
+		time: 1800000,
+		type: enum_spell_type.commun,
+	},
+	[enum_spell.champ_antimagie]: {
+		sphere: enum_sphere.alteration,
+		arcane: 3,
+		time: 1800000,
+		type: enum_spell_type.commun,
+	},
+	[enum_spell.image_miroir]: {
+		sphere: enum_sphere.alteration,
+		arcane: 4,
+		time: 1800000,
+		type: enum_spell_type.commun,
+	},
+	[enum_spell.silence]: {
+		sphere: enum_sphere.alteration,
+		arcane: 4,
+		time: 1800000,
+		type: enum_spell_type.commun,
+	},
+	[enum_spell.distorsion_temporelle]: {
+		sphere: enum_sphere.alteration,
+		arcane: 5,
+		time: 1800000,
+		type: enum_spell_type.profane,
+	},
+	[enum_spell.vision_ultime]: {
+		sphere: enum_sphere.alteration,
+		arcane: 5,
+		time: 1800000,
+		type: enum_spell_type.commun,
+	},
+	[enum_spell.absorption]: {
+		sphere: enum_sphere.negation,
+		arcane: 2,
+		time: 1800000,
+		type: enum_spell_type.commun,
+	},
+	[enum_spell.cicatrisation]: {
+		sphere: enum_sphere.negation,
+		arcane: 4,
+		time: 1800000,
+		type: enum_spell_type.profane,
 	},
 };

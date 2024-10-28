@@ -47,10 +47,12 @@
 		flex-wrap: wrap;
 		gap: 20px 80px;
 		&_character {
-			min-width: 40%;
+			width: 100%;
 			display: flex;
+			justify-content: center;
 			gap: 20px;
-			& svg {
+			align-items: center;
+			&_delete {
 				width: 25px;
 				cursor: pointer;
 				&:hover {

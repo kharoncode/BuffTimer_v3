@@ -171,6 +171,7 @@ const GroupShow = ({
 									<CharacterCard character={character.character} setRefreshCharacter={setRefresh} />
 									{casterId === creator_id && (
 										<svg
+											className={styles.arene_team_character_delete}
 											onClick={() => handleDelete(character.group_characters_id)}
 											xmlns="http://www.w3.org/2000/svg"
 											viewBox="0 0 448 512"
