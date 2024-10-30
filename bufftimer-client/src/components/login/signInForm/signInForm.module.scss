@@ -32,6 +32,18 @@
 			left: 10px;
 			transition-duration: 300ms;
 		}
+		&_showPassword__label {
+			left: initial !important;
+			right: 0 !important;
+			& svg {
+				width: 20px;
+			}
+		}
+		&_showPassword__input {
+			width: 0;
+			height: 0;
+			opacity: 0;
+		}
 		input {
 			height: 40px;
 			outline: none;

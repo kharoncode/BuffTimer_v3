@@ -53,6 +53,7 @@ const CharacterPage = () => {
 
 	if (data) {
 		const { character, characterRealmList } = data;
+		console.log(characterRealmList);
 
 		return (
 			<div className={styles.container}>

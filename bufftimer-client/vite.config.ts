@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react-swc';
 import * as path from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
 
-// https://vitejs.dev/config/
 export default defineConfig({
 	css: {
 		preprocessorOptions: {
@@ -16,7 +15,11 @@ export default defineConfig({
 		react(),
 		VitePWA({
 			registerType: 'autoUpdate',
-			workbox: { globPatterns: ['**/*{js,css,html,ico,png,svg}'] },
+			workbox: {
+				globPatterns: ['**/*{js,css,html,ico,png,svg}'],
+				cacheId: 'bufftimer-cache',
+				cleanupOutdatedCaches: true,
+			},
 			manifest: {
 				name: 'Ideo - BuffTimer',
 				short_name: 'BuffTimer',

@@ -1,3 +1,5 @@
+import { Spell } from './spell';
+
 export type Character = {
 	id: number;
 	user_id: number;
@@ -11,5 +13,5 @@ export type Character = {
 	enum_god: number;
 	enum_magic_type: number;
 	sphere: number;
-	favoris: string;
+	spells: Spell[];
 };

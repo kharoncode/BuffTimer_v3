@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { drizzle } from 'drizzle-orm/d1';
-import { characters } from '../db/schema';
-import { eq, and, ne } from 'drizzle-orm';
+import { character_spells, characters } from '../db/schema';
+import { eq, and, ne, inArray, lt } from 'drizzle-orm';
 import { Bindings, Variables } from '../lib/bindings';
 
 const charactersRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>();
@@ -23,13 +23,28 @@ charactersRoute
 			if (resp.length === 0) {
 				return c.json({ error: 'Personnage introuvable ou non autorisé.' }, 404);
 			} else {
-				const realm_characters = await db
+				const characterSpellsList = await db.select().from(character_spells).where(eq(character_spells.character_id, character_id));
+				const character = { ...resp[0], spells: characterSpellsList };
+
+				const realm_charactersRowList = await db
 					.select()
 					.from(characters)
-					.where(and(eq(characters.enum_realm, resp[0].enum_realm), ne(characters.id, resp[0].id)))
+					.where(and(eq(characters.enum_realm, character.enum_realm), ne(characters.id, character.id)))
 					.orderBy(characters.name);
-
-				return c.json({ character: resp[0], characterRealmList: realm_characters });
+				const spellsList = await db
+					.select()
+					.from(character_spells)
+					.where(
+						inArray(
+							character_spells.character_id,
+							realm_charactersRowList.map((character) => character.id)
+						)
+					);
+				const realm_characters = realm_charactersRowList.map((character) => {
+					const spells = spellsList.filter((spell) => spell.character_id === character.id);
+					return { ...character, spells: spells };
+				});
+				return c.json({ character: character, characterRealmList: realm_characters });
 			}
 		} else {
 			return c.json({ error: 'Un id est requis !' });
@@ -41,7 +56,24 @@ charactersRoute
 			return c.json({ error: 'Veuillez vous connecter !' }, 404);
 		}
 		const db = drizzle(c.env.DB);
-		const resp = await db.select().from(characters).where(eq(characters.user_id, user.id));
+		const charactersList = await db.select().from(characters).where(eq(characters.user_id, user.id)).orderBy(characters.name);
+
+		const currentTime = Date.now();
+		await db.delete(character_spells).where(lt(character_spells.expires_at, currentTime));
+
+		const spellsList = await db
+			.select()
+			.from(character_spells)
+			.where(
+				inArray(
+					character_spells.character_id,
+					charactersList.map((character) => character.id)
+				)
+			);
+		const resp = charactersList.map((character) => {
+			const spells = spellsList.filter((spell) => spell.character_id === character.id);
+			return { ...character, spells: spells };
+		});
 		return c.json(resp);
 	})
 	.get('/all', async (c) => {
@@ -51,7 +83,20 @@ charactersRoute
 		}
 		const db = drizzle(c.env.DB);
 
-		const resp = await db.select().from(characters).orderBy(characters.name);
+		const charactersList = await db.select().from(characters).orderBy(characters.name);
+		const spellsList = await db
+			.select()
+			.from(character_spells)
+			.where(
+				inArray(
+					character_spells.character_id,
+					charactersList.map((character) => character.id)
+				)
+			);
+		const resp = charactersList.map((character) => {
+			const spells = spellsList.filter((spell) => spell.character_id === character.id);
+			return { ...character, spells: spells };
+		});
 		return c.json(resp);
 	})
 	.post('/', async (c) => {

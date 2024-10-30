@@ -12,6 +12,7 @@ function Home() {
 						des joueurs ainsi que leurs besoins."
 					</p>
 					<div className={styles.video}>
+						<h3>Voici une vidéo de présentation du BuffTimer :</h3>
 						<iframe
 							width="500"
 							height="400"

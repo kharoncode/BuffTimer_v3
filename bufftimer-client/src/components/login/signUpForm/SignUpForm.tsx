@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/router/store';
 import { checkAuth } from '@/router/slice/authSlice';
 import { userCharacters, userData } from '@/router/slice/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = ({ toggle }: { toggle: (bool: boolean) => void }) => {
 	const initialValue = { username: '', mail: '', password: '', password2: '', admin: false };
@@ -16,6 +17,7 @@ const SignUpForm = ({ toggle }: { toggle: (bool: boolean) => void }) => {
 	const [formError, setFormError] = useState(initialState);
 	const [errorPassword, setErrorPassword] = useState(false);
 	const dispatch = useDispatch<AppDispatch>();
+	const navigate = useNavigate();
 
 	const handleSet = (input: 'username' | 'mail' | 'password' | 'password2', status: boolean) => {
 		setFocus({ ...focus, [input]: formValue[input] === '' ? status : true });
@@ -72,6 +74,7 @@ const SignUpForm = ({ toggle }: { toggle: (bool: boolean) => void }) => {
 				dispatch(userCharacters());
 				resetForm();
 				toggle(false);
+				navigate('/auth/profile');
 			}
 		}
 	};
