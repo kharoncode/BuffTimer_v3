@@ -15,7 +15,7 @@ export default defineConfig({
 	plugins: [
 		react(),
 		VitePWA({
-			registerType: 'prompt',
+			registerType: 'autoUpdate',
 			workbox: { globPatterns: ['**/*{js,css,html,ico,png,svg}'] },
 			manifest: {
 				name: 'Ideo - BuffTimer',

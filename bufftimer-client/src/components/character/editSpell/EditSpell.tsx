@@ -55,7 +55,7 @@ const EditSpell = ({ characterId, spellList, setRefresh }: Type_EditSpell) => {
 			const data = {
 				spell: { character_id: characterId, enum_spell: spell, expires_at: 0 },
 				caster_id: casterId,
-				isCritical: isCritical ? 2 : 1,
+				isCritical: isCritical ? 1.5 : 1,
 			};
 			if (isCurrentSpell) {
 				data.spell.expires_at =

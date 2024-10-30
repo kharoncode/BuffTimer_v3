@@ -46,7 +46,7 @@ const Header = () => {
 				<NavLink className={`${styles.header_logo} ${styles.header_link}`} to={'/'}>
 					BuffTimer
 				</NavLink>
-				{isAuth ? (
+				{isAuth && Array.isArray(characterList) ? (
 					<>
 						{characterList.map((character) => (
 							<NavLink

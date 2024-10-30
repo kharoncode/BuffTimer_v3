@@ -6,14 +6,17 @@ import { userCharacters, userData } from '@/router/slice/userSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/router/store';
 import { checkAuth } from '@/router/slice/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const SignInForm = ({ toggle }: { toggle: (bool: boolean) => void }) => {
 	const [focus, setFocus] = useState({ login: false, password: false });
 	const [formValid, setFormValid] = useState({ login: false, password: false });
 	const [formValue, setFormValue] = useState({ login: '', password: '' });
 	const [formError, setFormError] = useState({ login: false, password: false });
+	const [errorConnexion, setErrorConnexion] = useState({ status: false, message: '' });
 
 	const dispatch = useDispatch<AppDispatch>();
+	const navigate = useNavigate();
 
 	const handleSet = (
 		input: 'login' | 'password',
@@ -70,6 +73,10 @@ const SignInForm = ({ toggle }: { toggle: (bool: boolean) => void }) => {
 				dispatch(userCharacters());
 				resetForm();
 				toggle(false);
+				navigate('/auth/profile');
+			} else {
+				const msg: { error: string } = await resp.json();
+				setErrorConnexion({ status: true, message: msg.error });
 			}
 		}
 	};
@@ -111,6 +118,7 @@ const SignInForm = ({ toggle }: { toggle: (bool: boolean) => void }) => {
 			<button className={`${styles.submit} ${isFormValid() && styles.submit_valid}`} type="submit">
 				Connexion
 			</button>
+			{errorConnexion.status && <ErrorMessage content={errorConnexion.message} />}
 		</form>
 	);
 };
