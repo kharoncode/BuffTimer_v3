@@ -12,15 +12,11 @@ function Home() {
 						des joueurs ainsi que leurs besoins."
 					</p>
 					<div className={styles.video}>
-						<h3>Voici une vidéo de présentation du BuffTimer :</h3>
-						<iframe
-							width="500"
-							height="400"
-							src={`https://www.youtube.com/embed/3LtkjbzNfyA`}
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-							allowFullScreen
-							title="Embedded youtube"
-						/>
+						<h3>
+							<a href={'https://youtu.be/3LtkjbzNfyA'} target="_blank">
+								Voici une vidéo de présentation du BuffTimer
+							</a>
+						</h3>
 					</div>
 				</article>
 			</section>
