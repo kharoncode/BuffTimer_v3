@@ -49,16 +49,12 @@ const Header = () => {
 				{isAuth && Array.isArray(characterList) ? (
 					<>
 						{characterList.map((character) => (
-							<NavLink
-								key={character.id}
-								to={`/auth/character?id=${character.id}&sphere=${character.sphere}`}
-								className={styles.header_authItem}
-							>
+							<NavLink key={character.id} to={`/auth/character/${character.id}/realm`} className={styles.header_authItem}>
 								<CharacterHeader character={character} />
 							</NavLink>
 						))}
 
-						<NavLink to="/auth/profile" className={`${styles.header_link} ${styles.welcome}`}>
+						<NavLink to="/auth/profil" className={`${styles.header_link} ${styles.welcome}`}>
 							Welcome {user.username}
 						</NavLink>
 					</>

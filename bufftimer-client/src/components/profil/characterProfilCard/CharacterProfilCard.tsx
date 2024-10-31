@@ -1,18 +1,28 @@
-import { Monster } from '@/services/types/monster';
+import { Character } from '@/services/types/character';
+import { enum_realm as er } from '../../../../../bt_enum/enum_character';
 import host from '@/services/host';
 import { useState } from 'react';
 import Modal from '@/components/modal/Modal';
-//import EditMonster from '../editMonster/EditMonster';
-import styles from './monsterProfileCard.module.scss';
-import { enum_mob_picture, enum_mob as em } from '../../../../../bt_enum/enum_mob';
-import EditMonster from '../editMonster/EditMonster';
+import EditCharacter from '../editCharacter/EditCharacter';
+import styles from './characterProfilCard.module.scss';
+import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/router/store';
+import { userCharacters } from '@/router/slice/userSlice';
 
-const MonsterProfileCard = ({ monster, onSuccess }: { monster: Monster; onSuccess: React.Dispatch<React.SetStateAction<boolean>> }) => {
-	const { id, name, enum_mob } = monster;
+const CharacterProfilCard = ({
+	character,
+	onSuccess,
+}: {
+	character: Character;
+	onSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+	const { name, id, picture, enum_realm } = character;
 	const [isOpen, setIsOpen] = useState(false);
+	const dispatch = useDispatch<AppDispatch>();
 
 	const handleDelete = async () => {
-		const resp = await fetch(`${host}/monsters`, {
+		const resp = await fetch(`${host}/characters`, {
 			method: 'DELETE',
 			credentials: 'include',
 			headers: { 'Content-Type': 'application/json' },
@@ -21,15 +31,19 @@ const MonsterProfileCard = ({ monster, onSuccess }: { monster: Monster; onSucces
 
 		if (resp.ok) {
 			onSuccess((prev) => !prev);
+			dispatch(userCharacters());
 		}
 	};
 
 	return (
 		<>
 			<div className={styles.container}>
-				<img className={styles.picture_mob} src={enum_mob_picture[enum_mob]} alt={`Picture of ${em.ToString(enum_mob)}`} />
+				<img className={styles.realm} src={`/pictures/realms/${enum_realm}.png`} alt={er.ToString(enum_realm)} />
+				<NavLink to={`/auth/character/${id}/realm`}>
+					<img className={styles.picture} src={picture} alt={`Picture of ${name}`} />
+				</NavLink>
 				<p className={styles.name}>{name}</p>
-				<p>{`(${em.ToString(enum_mob)})`}</p>
+
 				<div className={styles.option}>
 					<svg
 						className={`${styles.option_icone} ${styles.option_icone_edit}`}
@@ -53,11 +67,11 @@ const MonsterProfileCard = ({ monster, onSuccess }: { monster: Monster; onSucces
 			</div>
 			{isOpen && (
 				<Modal setIsOpen={setIsOpen}>
-					<EditMonster monster={monster} setIsOpen={setIsOpen} onSuccess={onSuccess} />
+					<EditCharacter character={character} setIsOpen={setIsOpen} onSuccess={onSuccess} />
 				</Modal>
 			)}
 		</>
 	);
 };
 
-export default MonsterProfileCard;
+export default CharacterProfilCard;

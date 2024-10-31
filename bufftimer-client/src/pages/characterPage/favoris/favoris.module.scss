@@ -8,6 +8,7 @@
 
 .select {
 	display: flex;
+	min-width: 400px;
 	gap: 20px;
 	margin-bottom: 30px;
 	&_option__1 {

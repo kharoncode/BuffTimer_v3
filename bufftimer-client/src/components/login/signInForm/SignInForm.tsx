@@ -74,7 +74,7 @@ const SignInForm = ({ toggle }: { toggle: (bool: boolean) => void }) => {
 				dispatch(userCharacters());
 				resetForm();
 				toggle(false);
-				navigate('/auth/profile');
+				navigate('/auth/profil');
 			} else {
 				const msg: { error: string } = await resp.json();
 				setErrorConnexion({ status: true, message: msg.error });

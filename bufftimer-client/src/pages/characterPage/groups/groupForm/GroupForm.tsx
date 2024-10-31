@@ -1,17 +1,16 @@
 import host from '@/services/host';
-import styles from '../../../profile/createCharacter/createCharacter.module.scss';
+import styles from '../../../../components/profil/createCharacter/createCharacter.module.scss';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import ErrorMessage from '@/components/error-message/ErrorMessage';
+import { useNavigate } from 'react-router-dom';
+import { store } from '@/router/store';
+import { userSlice } from '@/router/slice/userSlice';
+import { useSelector } from 'react-redux';
+import { groupRefresh } from '@/router/selectors';
 
-const GroupForm = ({
-	character_id,
-	setIsOpen,
-	onSuccess,
-}: {
-	character_id: number;
-	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	onSuccess: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const GroupForm = ({ character_id, setIsOpen }: { character_id: number; setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+	const navigate = useNavigate();
+	const refresh = useSelector(groupRefresh);
 	const initialValue = {
 		name: '',
 		creator_id: character_id,
@@ -53,9 +52,11 @@ const GroupForm = ({
 			});
 
 			if (resp.ok) {
+				const data: { id: number }[] = await resp.json();
 				resetForm();
 				setIsOpen(false);
-				onSuccess((prev) => !prev);
+				store.dispatch(userSlice.actions.groupRefresh(!refresh));
+				navigate(`/auth/character/${character_id}/group/${data[0].id}`);
 			}
 		}
 	};

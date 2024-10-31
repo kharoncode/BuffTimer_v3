@@ -6,9 +6,12 @@ import { PersistGate } from 'redux-persist/integration/react';
 import RootLayout from '@/layout/rootLayout/RootLayout';
 import NotFound from '@/layout/notFound/NotFound';
 import PrivateRoute from './PrivateRoute';
-import Profile from '@/pages/profile/Profile';
+import Profil from '@/pages/profil/Profil';
 import Settings from '@/pages/settings/Settings';
 import CharacterPage from '@/pages/characterPage/CharacterPage';
+import Realm from '@/pages/characterPage/realm/Realm';
+import Favoris from '@/pages/characterPage/favoris/Favoris';
+import GroupShow from '@/pages/characterPage/groups/groupShow/GroupShow';
 
 const App = () => {
 	const router = createBrowserRouter([
@@ -21,8 +24,16 @@ const App = () => {
 					path: '/auth',
 					element: <PrivateRoute />,
 					children: [
-						{ path: '/auth/profile', element: <Profile /> },
-						{ path: '/auth/character', element: <CharacterPage /> },
+						{ path: '/auth/profil', element: <Profil /> },
+						{
+							path: '/auth/character/:id',
+							element: <CharacterPage />,
+							children: [
+								{ path: '/auth/character/:id/realm', element: <Realm /> },
+								{ path: '/auth/character/:id/group/:group_id', element: <GroupShow /> },
+								{ path: '/auth/character/:id/favoris', element: <Favoris /> },
+							],
+						},
 						{ path: '/auth/settings', element: <Settings /> },
 					],
 				},

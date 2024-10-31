@@ -7,10 +7,10 @@ type Type_EditLife = {
 	id: number;
 	currentLife: number;
 	maxLife: number;
-	setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+	refresh: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const EditLife = ({ id, currentLife, maxLife, setRefresh }: Type_EditLife) => {
+const EditLife = ({ id, currentLife, maxLife, refresh }: Type_EditLife) => {
 	const [life, setLife] = useState({ currentLife: currentLife, maxLife: maxLife, pourcent: (currentLife * 100) / maxLife });
 
 	const handleChangeRange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +28,7 @@ const EditLife = ({ id, currentLife, maxLife, setRefresh }: Type_EditLife) => {
 		});
 
 		if (resp.ok) {
-			setRefresh((prev) => !prev);
+			refresh(life.currentLife);
 		}
 	};
 
@@ -51,7 +51,7 @@ const EditLife = ({ id, currentLife, maxLife, setRefresh }: Type_EditLife) => {
 				});
 
 				if (resp.ok) {
-					setRefresh((prev) => !prev);
+					refresh(life.currentLife);
 				}
 			}
 		}

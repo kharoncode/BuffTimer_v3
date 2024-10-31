@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import styles from './profile.module.scss';
+import styles from './profil.module.scss';
 import Modal from '@/components/modal/Modal';
-import CreateCharacter from '@/components/profile/createCharacter/CreateCharacter';
+import CreateCharacter from '@/components/profil/createCharacter/CreateCharacter';
 import UseFetch from '@/utils/useFetch';
 import host from '@/services/host';
 import { Character } from '@/services/types/character';
-import CharacterProfileCard from '@/components/profile/characterProfileCard/CharacterProfileCard';
-import CreateMonster from '@/components/profile/createMonster/CreateMonster';
+import CreateMonster from '@/components/profil/createMonster/CreateMonster';
 import { Monster } from '@/services/types/monster';
-import MonsterProfileCard from '@/components/profile/monsterProfileCard/MonsterProfileCard';
+import CharacterProfilCard from '@/components/profil/characterProfilCard/CharacterProfilCard';
+import MonsterProfilCard from '@/components/profil/monsterProfilCard/MonsterProfilCard';
 
-const Profile = () => {
+const Profil = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [refresh, setRefresh] = useState(false);
 	const [whichForm, setWichForm] = useState<string>('monster');
@@ -33,8 +33,8 @@ const Profile = () => {
 	);
 
 	return (
-		<div className={styles.profile}>
-			<div className={styles.profile_column}>
+		<div className={styles.profil}>
+			<div className={styles.profil_column}>
 				<button
 					className="btn"
 					onClick={() => {
@@ -44,12 +44,12 @@ const Profile = () => {
 				>
 					Ajouter un personnage
 				</button>
-				<div className={styles.profile_charactersList}>
+				<div className={styles.profil_charactersList}>
 					{characters &&
-						characters.map((character) => <CharacterProfileCard key={character.name} character={character} onSuccess={setRefresh} />)}
+						characters.map((character) => <CharacterProfilCard key={character.name} character={character} onSuccess={setRefresh} />)}
 				</div>
 			</div>
-			<div className={styles.profile_column}>
+			<div className={styles.profil_column}>
 				<button
 					className="btn"
 					onClick={() => {
@@ -59,8 +59,8 @@ const Profile = () => {
 				>
 					Ajouter un monstre
 				</button>
-				<div className={styles.profile_charactersList}>
-					{monsters && monsters.map((monster) => <MonsterProfileCard key={monster.name} monster={monster} onSuccess={setRefresh} />)}
+				<div className={styles.profil_charactersList}>
+					{monsters && monsters.map((monster) => <MonsterProfilCard key={monster.name} monster={monster} onSuccess={setRefresh} />)}
 				</div>
 			</div>
 
@@ -77,4 +77,4 @@ const Profile = () => {
 	);
 };
 
-export default Profile;
+export default Profil;

@@ -35,13 +35,17 @@ export const userCharacters = createAsyncThunk('user/characters', async () => {
 
 type DataState = {
 	loading: boolean;
-	data: { user: User; characters: Character[]; profil: { isSpellView: boolean } };
+	data: { user: User; characters: Character[]; profil: { isSpellView: boolean; groupRefresh: boolean } };
 	error: boolean | null | string | undefined;
 };
 
 const initialState: DataState = {
 	loading: false,
-	data: { user: { id: 0, username: '', mail: '', date: '', admin: false }, characters: [], profil: { isSpellView: false } },
+	data: {
+		user: { id: 0, username: '', mail: '', date: '', admin: false },
+		characters: [],
+		profil: { isSpellView: false, groupRefresh: false },
+	},
 	error: null,
 };
 
@@ -53,7 +57,11 @@ export const userSlice = createSlice({
 			return initialState;
 		},
 		changeIsSpellView: (state, action) => {
-			const newState = { ...state, data: { ...state.data, profil: { isSpellView: action.payload } } };
+			const newState = { ...state, data: { ...state.data, profil: { ...state.data.profil, isSpellView: action.payload } } };
+			return newState;
+		},
+		groupRefresh: (state, action) => {
+			const newState = { ...state, data: { ...state.data, profil: { ...state.data.profil, groupRefresh: action.payload } } };
 			return newState;
 		},
 	},

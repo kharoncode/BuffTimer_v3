@@ -75,6 +75,25 @@
 
 .select {
 	display: flex;
+	min-width: 400px;
 	gap: 20px;
 	margin-bottom: 30px;
+	&_option__1 {
+		background-color: rgb(255, 236, 131);
+	}
+	&_option__2 {
+		background-color: rgb(255, 131, 131);
+	}
+	&_option__3 {
+		background-color: rgb(187, 255, 131);
+	}
+	&_option__4 {
+		background-color: rgb(131, 205, 255);
+	}
+	&_option__5 {
+		background-color: rgb(255, 187, 131);
+	}
+	&_option__6 {
+		background-color: rgb(221, 221, 221);
+	}
 }

@@ -21,6 +21,9 @@ export function getUserCharacters(state: RootState) {
 export const isSpellView = (state: RootState) => {
 	return state.user.data.profil.isSpellView;
 };
+export const groupRefresh = (state: RootState) => {
+	return state.user.data.profil.groupRefresh;
+};
 
 // players
 // export function getPlayers(state: RootState) {

@@ -24,13 +24,14 @@ charactersRoute
 				return c.json({ error: 'Personnage introuvable ou non autorisé.' }, 404);
 			} else {
 				const characterSpellsList = await db.select().from(character_spells).where(eq(character_spells.character_id, character_id));
-				const character = { ...resp[0], spells: characterSpellsList };
+				const user_Character = { ...resp[0], spells: characterSpellsList };
 
 				const realm_charactersRowList = await db
 					.select()
 					.from(characters)
-					.where(and(eq(characters.enum_realm, character.enum_realm), ne(characters.id, character.id)))
+					.where(and(eq(characters.enum_realm, user_Character.enum_realm), ne(characters.id, user_Character.id)))
 					.orderBy(characters.name);
+
 				const spellsList = await db
 					.select()
 					.from(character_spells)
@@ -44,7 +45,7 @@ charactersRoute
 					const spells = spellsList.filter((spell) => spell.character_id === character.id);
 					return { ...character, spells: spells };
 				});
-				return c.json({ character: character, characterRealmList: realm_characters });
+				return c.json({ character: user_Character, characterRealmList: realm_characters });
 			}
 		} else {
 			return c.json({ error: 'Un id est requis !' });

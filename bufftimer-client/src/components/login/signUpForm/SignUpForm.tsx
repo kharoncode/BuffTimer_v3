@@ -74,7 +74,7 @@ const SignUpForm = ({ toggle }: { toggle: (bool: boolean) => void }) => {
 				dispatch(userCharacters());
 				resetForm();
 				toggle(false);
-				navigate('/auth/profile');
+				navigate('/auth/profil');
 			}
 		}
 	};

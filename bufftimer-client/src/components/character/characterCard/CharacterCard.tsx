@@ -4,9 +4,6 @@ import styled from 'styled-components';
 import LifeBar from '../lifeBar/lifeBar';
 import { useEffect, useState } from 'react';
 import SpellCard from '../spellCard/SpellCard';
-import UseFetch from '@/utils/useFetch';
-import { Spell } from '@/services/types/spell';
-import host from '@/services/host';
 import Modal from '@/components/modal/Modal';
 import EditSpell from '../editSpell/EditSpell';
 import EditLife from '../editLife/EditLife';
@@ -24,18 +21,18 @@ const SpellContainer = styled.div<{ $flex: string }>`
 	}
 `;
 
-const CharacterCard = ({
-	character,
-	setRefreshCharacter,
-}: {
-	character: Character;
-	setRefreshCharacter: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const CharacterCard = ({ character }: { character: Character }) => {
 	const isSpellOpen = useSelector(isSpellView);
 	const [isOpen, setOpen] = useState(false);
-	const [refresh, setRefresh] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [formSelected, setFormSelected] = useState(true);
+	const [spellList, setSpellList] = useState(character.spells);
+	const [life, setLife] = useState(character.current_life);
+
+	useEffect(() => {
+		setSpellList(character.spells);
+		setLife(character.current_life);
+	}, [character]);
 
 	useEffect(() => {
 		setOpen(isSpellOpen);
@@ -45,15 +42,6 @@ const CharacterCard = ({
 		setIsModalOpen(true);
 		setFormSelected(select);
 	};
-
-	const { data: spellsList } = UseFetch<Spell[]>(
-		`${host}/character-spells?id=${character.id}`,
-		{
-			method: 'GET',
-			credentials: 'include',
-		},
-		refresh
-	);
 
 	const style: string = isOpen
 		? `flex-direction: column;
@@ -77,16 +65,16 @@ const CharacterCard = ({
 
 					<img className={styles.playerPicture} src={character.picture} alt={character.name}></img>
 					<div className={styles.title}>{character.name}</div>
-					<LifeBar life={{ maxLife: character.max_life, currentLife: character.current_life }} />
+					<LifeBar life={{ maxLife: character.max_life, currentLife: life }} />
 				</div>
-				{spellsList && (
+				{spellList && (
 					<SpellContainer
 						onClick={() => {
 							setOpen((prev) => !prev);
 						}}
 						$flex={style}
 					>
-						{spellsList.map((spell) => (
+						{spellList.map((spell) => (
 							<SpellCard
 								key={`${character.id}-${spell.id}-spell`}
 								id={spell.id}
@@ -95,7 +83,7 @@ const CharacterCard = ({
 								created_at={spell.created_at}
 								expires_at={Number(spell.expires_at)}
 								isOpen={isOpen}
-								setRefresh={setRefresh}
+								setRefresh={setSpellList}
 							/>
 						))}
 					</SpellContainer>
@@ -104,14 +92,9 @@ const CharacterCard = ({
 			{isModalOpen && (
 				<Modal setIsOpen={setIsModalOpen}>
 					{formSelected ? (
-						<EditSpell characterId={character.id} spellList={spellsList} setRefresh={setRefresh} />
+						<EditSpell characterId={character.id} spellList={spellList} setRefresh={setSpellList} />
 					) : (
-						<EditLife
-							id={character.id}
-							currentLife={character.current_life}
-							maxLife={character.max_life}
-							setRefresh={setRefreshCharacter}
-						/>
+						<EditLife id={character.id} currentLife={life} maxLife={character.max_life} refresh={setLife} />
 					)}
 				</Modal>
 			)}

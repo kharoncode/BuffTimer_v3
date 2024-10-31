@@ -1,0 +1,133 @@
+.dashboard {
+	&_menu {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
+		width: 350px;
+		border-right: solid 2px black;
+		&__item {
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			border-radius: 15px;
+			padding: 10px 40px;
+			gap: 10px;
+			&__title {
+				cursor: pointer;
+				font-size: 1.3rem;
+				&:hover {
+					color: var(--color-hl1);
+				}
+			}
+
+			& p {
+				text-align: center;
+				font-size: 1.1rem;
+				font-weight: 700;
+			}
+			& img {
+				height: 80px;
+			}
+			&_group {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				&_btn {
+					text-align: center;
+					cursor: pointer;
+					font-weight: 600;
+					padding: 10px;
+					border-radius: 10px;
+					border-style: none;
+					color: white;
+					background: var(--color-hl1);
+					&:hover {
+						background-color: var(--color-hl3);
+					}
+				}
+				&_nav {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					gap: 30px;
+					margin-left: 20px;
+					padding-left: 10px;
+					border-left: solid 2px black;
+				}
+				&_container {
+					width: 100%;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					gap: 20px;
+					& h3 {
+						font-size: 1.1rem;
+						text-align: center;
+					}
+				}
+				&_list {
+					width: 100%;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					gap: 20px;
+				}
+			}
+		}
+	}
+}
+
+.groupContainer {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 15px;
+	& svg {
+		width: 15px;
+	}
+}
+
+.no_group {
+	width: 100%;
+	text-align: center;
+}
+
+.groupCard {
+	width: 80%;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	font-weight: 500;
+	cursor: pointer;
+	border: solid 2px var(--color-hl1);
+	border-radius: 25px;
+	padding: 3px;
+	&:hover {
+		color: var(--color-hl1);
+		font-weight: 700;
+	}
+	&_active {
+		color: var(--color-hl1);
+		font-weight: 700;
+	}
+}
+
+.active {
+	color: var(--color-hl1);
+	cursor: pointer;
+}
+
+.option {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	&_icone {
+		cursor: pointer;
+		width: 15px;
+		&:hover {
+			fill: var(--color-hl1);
+		}
+	}
+}

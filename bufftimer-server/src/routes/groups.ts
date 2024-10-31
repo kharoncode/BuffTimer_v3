@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { drizzle } from 'drizzle-orm/d1';
-import { characters, group_characters, group_enemies, groups, monsters } from '../db/schema';
-import { eq, and, notInArray } from 'drizzle-orm';
+import { character_spells, characters, group_characters, group_enemies, groups, monsters } from '../db/schema';
+import { eq, and, notInArray, inArray } from 'drizzle-orm';
 import { Bindings, Variables } from '../lib/bindings';
 
 const groupsRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>();
@@ -50,13 +50,15 @@ groupsRoute
 		const db = drizzle(c.env.DB);
 		const group_id = Number(c.req.query('id'));
 		if (group_id) {
+			const group = await db.select().from(groups).where(eq(groups.id, group_id));
+
 			const charactersGroupListRow = await db
 				.select({
 					character: characters,
 					group_characters_id: group_characters.id,
 				})
 				.from(group_characters)
-				.leftJoin(characters, eq(group_characters.character_id, characters.id))
+				.innerJoin(characters, eq(group_characters.character_id, characters.id))
 				.where(eq(group_characters.group_id, group_id))
 				.orderBy(characters.name);
 
@@ -76,7 +78,7 @@ groupsRoute
 					sphere: characters.sphere,
 				})
 				.from(group_enemies)
-				.leftJoin(characters, eq(group_enemies.enemy_id, characters.id))
+				.innerJoin(characters, eq(group_enemies.enemy_id, characters.id))
 				.where(and(eq(group_enemies.group_id, group_id), eq(group_enemies.type, 1)));
 
 			const monstersEnemiesGroupListRow = await db
@@ -89,15 +91,37 @@ groupsRoute
 					max_life: monsters.max_life,
 				})
 				.from(group_enemies)
-				.leftJoin(monsters, eq(group_enemies.enemy_id, monsters.id))
+				.innerJoin(monsters, eq(group_enemies.enemy_id, monsters.id))
 				.where(and(eq(group_enemies.group_id, group_id), eq(group_enemies.type, 0)));
 
 			const group_data = {
-				id: group_id,
+				group_id: group_id,
+				group_name: group[0].name,
+				creator_id: group[0].creator_id,
 				characters: charactersGroupListRow,
 				enemies: { characters: charactersEnemiesGroupListRow, monsters: monstersEnemiesGroupListRow },
 			};
-			return c.json(group_data, 200);
+
+			let result;
+
+			if (charactersGroupListRow.length > 0) {
+				const spellsList = await db
+					.select()
+					.from(character_spells)
+					.where(
+						inArray(
+							character_spells.character_id,
+							charactersGroupListRow.map((character) => character.character.id)
+						)
+					);
+
+				result = group_data.characters.map((character) => {
+					const spells = spellsList.filter((spell) => spell.character_id === character.character.id);
+					return { ...character, character: { ...character.character, spells: spells } };
+				});
+			}
+
+			return c.json({ ...group_data, characters: result }, 200);
 		} else {
 			return c.json({ error: 'Un id est requis !' });
 		}

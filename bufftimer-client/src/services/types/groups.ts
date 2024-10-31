@@ -8,7 +8,9 @@ export type Group = {
 };
 
 export type Group_Show = {
-	id: number;
+	group_id: number;
+	group_name: string;
+	creator_id: number;
 	characters: { character: Character; group_characters_id: number }[];
 	enemies: {
 		characters: Character[];

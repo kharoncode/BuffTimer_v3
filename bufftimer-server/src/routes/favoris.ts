@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { drizzle } from 'drizzle-orm/d1';
-import { characters, group_characters, group_enemies, favoris, monsters } from '../db/schema';
-import { eq, and } from 'drizzle-orm';
+import { characters, group_characters, group_enemies, favoris, monsters, character_spells } from '../db/schema';
+import { eq, and, inArray } from 'drizzle-orm';
 import { Bindings, Variables } from '../lib/bindings';
 
 const favorisRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>();
@@ -15,16 +15,48 @@ favorisRoute
 		const db = drizzle(c.env.DB);
 		const character_id = Number(c.req.query('id'));
 		if (character_id) {
-			const resp = await db
+			let resp: {
+				character: {
+					id: number;
+					user_id: number;
+					name: string;
+					picture: string;
+					enum_realm: number;
+					intelligence: number;
+					current_life: number;
+					max_life: number;
+					message: string;
+					enum_god: number;
+					enum_magic_type: number;
+					sphere: number;
+				};
+				favoris_id: number;
+			}[] = [];
+			const favorisCharacterList = await db
 				.select({
 					character: characters,
 					favoris_id: favoris.id,
 				})
 				.from(favoris)
-				.leftJoin(characters, eq(favoris.character_favoris_id, characters.id))
+				.innerJoin(characters, eq(favoris.character_favoris_id, characters.id))
 				.where(eq(favoris.character_id, character_id))
 				.orderBy(characters.name);
 
+			if (favorisCharacterList.length > 0) {
+				const spellsList = await db
+					.select()
+					.from(character_spells)
+					.where(
+						inArray(
+							character_spells.character_id,
+							favorisCharacterList.map((character) => character.character.id)
+						)
+					);
+				resp = favorisCharacterList.map((character) => {
+					const spells = spellsList.filter((spell) => spell.character_id === character.character.id);
+					return { ...character, character: { ...character.character, spells: spells } };
+				});
+			}
 			return c.json(resp, 200);
 		} else {
 			return c.json({ error: 'Un id est requis !' });

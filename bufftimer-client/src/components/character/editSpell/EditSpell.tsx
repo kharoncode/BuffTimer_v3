@@ -3,26 +3,32 @@ import { enum_spell, enum_spell_data as esd } from '../../../../../bt_enum/enum_
 import styles from './editSpell.module.scss';
 import { Spell } from '@/services/types/spell';
 import { ChangeEvent, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import host from '@/services/host';
+import { useSelector } from 'react-redux';
+import { getUserCharacters } from '@/router/selectors';
 
 type Type_EditSpell = {
 	characterId: number;
-	spellList: Spell[] | null;
-	setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+	spellList: Spell[];
+	setRefresh: React.Dispatch<React.SetStateAction<Spell[]>>;
 };
 
 const EditSpell = ({ characterId, spellList, setRefresh }: Type_EditSpell) => {
-	const [searchParams] = useSearchParams();
-	const casterId = Number(searchParams.get('id'));
-	const casterSphere = searchParams
-		.get('sphere')
-		?.split('')
+	const params = useParams();
+	const casterId = Number(params.id);
+
+	const casterSphereRaw = useSelector(getUserCharacters).filter((character) => character.id === casterId)[0].sphere;
+	const casterSphere = casterSphereRaw
+		.toString()
+		.split('')
 		.map((el) => Number(el));
+
 	const [spell, setSpell] = useState(0);
 	const [isCurrentSpell, setIsCurrentSpell] = useState(0);
 	const [currentSpellTime, setCurrentSpellTime] = useState({ day: 0, hour: 0, minute: 1 });
 	const [isCritical, setIsCritical] = useState(false);
+	const [selectReset, setSelectReset] = useState(false);
 
 	const options = Object.keys(enum_spell)
 		.filter((key) => typeof enum_spell[key as keyof typeof enum_spell] === 'number')
@@ -69,7 +75,13 @@ const EditSpell = ({ characterId, spellList, setRefresh }: Type_EditSpell) => {
 			});
 
 			if (resp.ok) {
-				setRefresh((prev) => !prev);
+				const newSpell: Spell[] = await resp.json();
+				setRefresh(() => {
+					const newList = [...spellList];
+					newList.push(newSpell[0]);
+					return newList;
+				});
+				setSelectReset((prev) => !prev);
 			}
 		}
 	};
@@ -83,7 +95,7 @@ const EditSpell = ({ characterId, spellList, setRefresh }: Type_EditSpell) => {
 		});
 
 		if (resp.ok) {
-			setRefresh((prev) => !prev);
+			setRefresh((prev) => prev.filter((spell) => spell.id != activeSpellId));
 		}
 	};
 
@@ -105,7 +117,7 @@ const EditSpell = ({ characterId, spellList, setRefresh }: Type_EditSpell) => {
 			)}
 			<div className={styles.addSpell}>
 				<h4>Ajouter un Sort</h4>
-				<Select options={isCurrentSpell ? optionsAll : options} initOption="Selectionner un sort" onChange={setSpell} />
+				<Select options={isCurrentSpell ? optionsAll : options} initOption="Selectionner un sort" onChange={setSpell} reset={selectReset} />
 				<div className={styles.isCurrentSpell}>
 					<label htmlFor="isCurrentSpell">Sort en court ?</label>
 					<select onChange={(event) => setIsCurrentSpell(Number(event.currentTarget.value))} name="isCurrentSpell" id="isCurrentSpell">
