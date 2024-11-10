@@ -50,6 +50,7 @@ export const enum_spell = {
 	vision_ultime: 37,
 	absorption: 38,
 	cicatrisation: 39,
+	alcoolise: 40,
 	ToString: (value: number): string | undefined => {
 		const str = [
 			undefined,
@@ -92,6 +93,7 @@ export const enum_spell = {
 			'Vision ultime',
 			'Absorption',
 			'Cicatrisation',
+			'ALCOOLISÉ',
 		];
 		return str[value];
 	},
@@ -331,5 +333,11 @@ export const enum_spell_data = {
 		arcane: 4,
 		time: 1800000,
 		type: enum_spell_type.profane,
+	},
+	[enum_spell.alcoolise]: {
+		sphere: enum_sphere.autre,
+		arcane: 1,
+		time: 1,
+		type: enum_spell_type.commun,
 	},
 };

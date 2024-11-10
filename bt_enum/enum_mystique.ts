@@ -52,8 +52,9 @@ export const enum_sphere = {
 	negation: 4,
 	alteration: 5,
 	justice: 6,
+	autre: 7,
 	ToString: (value: number): string | undefined => {
-		const str = [undefined, 'Protection', 'Vitalité', 'Destruction', 'Négation', 'Altération', 'Justice'];
+		const str = [undefined, 'Protection', 'Vitalité', 'Destruction', 'Négation', 'Altération', 'Justice', 'Autre'];
 		return str[value];
 	},
 };
